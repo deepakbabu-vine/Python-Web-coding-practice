@@ -50,7 +50,9 @@ for root, dirs, files in os.walk(path):
                     print "existing:", existing_dir_path
                     print "new file:", new_dir_path
                     os.rename(existing_dir_path, new_dir_path)
-                    os.mkdir(new_dir_path + "/" + suffices[i])
+                    subdir_path = new_dir_path + "/" + suffices[i]
+                    if not check_dir_exists(subdir_path):
+                        os.mkdir(subdir_path)
                     if move_file_collection(new_dir_path, suffices[i]):
                         print("Moved files!!!")
                     else:
