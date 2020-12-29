@@ -4,6 +4,12 @@ import os
 import traceback
 import logging
 
+path = "/users/deepak.babu/documents/"
+suffices = ["ind", "ukl", "loc", "spn"]
+dir_name_index = 1
+is_log_only = False
+renamed_folders = {}
+
 
 logging.basicConfig(
      filename='refactor_folder_log.log',
@@ -18,9 +24,12 @@ console.setFormatter(formatter)
 logging.getLogger('').addHandler(console)
 logger = logging.getLogger(__name__)
 
-path = "/users/deepak.babu/documents/"
-suffices = ["ind", "ukl", "loc", "spn"]
-dir_name_index = 1
+
+def check_dirname_exists_in_map(the_d):
+    if the_d in renamed_folders.values():
+        return True
+    else:
+        return False
 
 
 def check_dir_exists(new_dir):
@@ -72,6 +81,21 @@ def move_to_config(dir_path, f):
         return
 
 
+def check_and_add_pairs_to_map(root_path, the_dir_path, the_striped_dir_name, the_index_appender_value):
+    if check_dirname_exists_in_map(root_path + the_striped_dir_name):
+        while True:
+            temp_name = root_path + the_striped_dir_name + "(" + str(the_index_appender_value) + ")"
+            if check_dirname_exists_in_map(temp_name):
+                the_index_appender_value += 1
+                continue
+            else:
+                renamed_folders[root_path + the_dir_path] = temp_name
+                return temp_name
+    else:
+        renamed_folders[root_path + the_dir_path] = root_path + the_striped_dir_name
+        return root_path + the_striped_dir_name
+
+
 def move_file_collection(dir_path, sub_dir_name):
     """
     Moves all files except properties file into the sub-directory created using the
@@ -104,18 +128,22 @@ if __name__ == "__main__":
             for index in range(len(suffices)):
                 if (directory.rfind(suffices[index])) > 0:
                     try:
-                        existing_dir_path = path + directory
                         new_dir_name = directory.rstrip(suffices[index]).rstrip("_")
-                        new_dir_path = path + new_dir_name
-                        if check_dir_exists(new_dir_path):
-                            new_dir_path, dir_name_index = append_num_to_dirname(new_dir_path, dir_name_index)
-                        os.rename(existing_dir_path, new_dir_path)
-                        subdir_path = new_dir_path + "/" + suffices[index]
-                        if not check_dir_exists(subdir_path):
-                            os.mkdir(subdir_path)
-                        if move_file_collection(new_dir_path, suffices[index]):
-                            print("Moved files successfully!!!")
-                        break
+                        if is_log_only:
+                            new_available_name = check_and_add_pairs_to_map(root, directory, new_dir_name, dir_name_index)
+                            print "(", root + directory, ")", "will be renamed to ", "(", new_available_name, ")"
+                        else:
+                            existing_dir_path = path + directory
+                            new_dir_path = path + new_dir_name
+                            if check_dir_exists(new_dir_path):
+                                new_dir_path, dir_name_index = append_num_to_dirname(new_dir_path, dir_name_index)
+                            os.rename(existing_dir_path, new_dir_path)
+                            subdir_path = new_dir_path + "/" + suffices[index]
+                            if not check_dir_exists(subdir_path):
+                                os.mkdir(subdir_path)
+                            if move_file_collection(new_dir_path, suffices[index]):
+                                print("Moved files successfully!!!")
+                            break
                     except OSError:
                         traceback.print_exc()
                         logger.exception("Exception occurred:")
