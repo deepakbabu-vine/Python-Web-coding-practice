@@ -3,32 +3,34 @@
 import os
 import traceback
 import logging
+from datetime import datetime
+from logging.handlers import RotatingFileHandler
 
 path = "/users/deepak.babu/documents/"
 suffices = ["ind", "ukl", "loc", "spn"]
 dir_name_index = 1
-is_log_only = False
+is_log_only = True
 renamed_folders = {}
+now = datetime.now()
+file_name = now.strftime('logs_%d_%m_%Y,%H-%M.log')
 
-
-logging.basicConfig(
-     filename='refactor_folder_log.log',
-     level=logging.DEBUG,
-     format='[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s',
-     datefmt='%H:%M:%S'
- )
-console = logging.StreamHandler()
-console.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
-console.setFormatter(formatter)
-logging.getLogger('').addHandler(console)
+log_formatter = logging.Formatter('[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s')
+log_file = "/users/deepak.babu/documents/" + file_name
+rotation_handler = RotatingFileHandler(log_file, mode='a', maxBytes=5*1024*1024,backupCount=2, encoding=None,
+                                       delay=False)
+rotation_handler.setFormatter(log_formatter)
+rotation_handler.setLevel(logging.DEBUG)
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(rotation_handler)
 
 
 def check_dirname_exists_in_map(the_d):
     if the_d in renamed_folders.values():
         return True
     else:
+        if check_dir_exists(the_d):
+            return True
         return False
 
 
@@ -40,7 +42,6 @@ def check_dir_exists(new_dir):
     :return: True, if directory exists
     """
     if os.path.exists(new_dir):
-        logger.debug("%s Directory already exists", new_dir + ":")
         return True
     else:
         return False
@@ -130,8 +131,10 @@ if __name__ == "__main__":
                     try:
                         new_dir_name = directory.rstrip(suffices[index]).rstrip("_")
                         if is_log_only:
-                            new_available_name = check_and_add_pairs_to_map(root, directory, new_dir_name, dir_name_index)
+                            new_available_name = check_and_add_pairs_to_map(root, directory, new_dir_name,
+                                                                            dir_name_index)
                             print "(", root + directory, ")", "will be renamed to ", "(", new_available_name, ")"
+                            logger.debug("(%s) will be renamed to (%s)", root+directory, new_available_name)
                         else:
                             existing_dir_path = path + directory
                             new_dir_path = path + new_dir_name
