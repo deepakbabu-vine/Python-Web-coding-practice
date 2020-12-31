@@ -1,6 +1,7 @@
 # This code works only for MAC OSX
 
 import os
+import shutil
 import traceback
 import logging
 from datetime import datetime
@@ -9,7 +10,8 @@ from logging.handlers import RotatingFileHandler
 path = "/users/deepak.babu/documents/"
 suffices = ["ind", "ukl", "loc", "spn"]
 dir_name_index = 1
-is_log_only = True
+is_log_only = False
+keep_original_files = True
 renamed_folders = {}
 now = datetime.now()
 file_name = now.strftime('logs_%d_%m_%Y,%H-%M.log')
@@ -97,7 +99,7 @@ def check_and_add_pairs_to_map(root_path, the_dir_path, the_striped_dir_name, th
         return root_path + the_striped_dir_name
 
 
-def move_file_collection(dir_path, sub_dir_name):
+def move_file_collection(new_backup_path,dir_path, sub_dir_name):
     """
     Moves all files except properties file into the sub-directory created using the
     base directory suffix.
@@ -106,21 +108,34 @@ def move_file_collection(dir_path, sub_dir_name):
     :param sub_dir_name: Gets the suffix name of the directory
     """
     list_files = os.listdir(dir_path)
-    for f in list_files:
-        if f == sub_dir_name or f == ".config":
-            continue
-        if f.endswith(".properties"):
-            move_to_config(dir_path, f)
-            continue
-        existing_filepath = dir_path + "/" + f
-        new_filepath = dir_path + "/" + sub_dir_name + "/" + f
-        try:
-            os.rename(existing_filepath, new_filepath)
-        except OSError:
-            traceback.print_exc()
-            logger.exception("Failed to move files!!!")
-            return False
-    return True
+    if not keep_original_files:
+        for f in list_files:
+            if f == sub_dir_name or f == ".config":
+                continue
+            if f.endswith(".properties"):
+                move_to_config(dir_path, f)
+                continue
+            existing_filepath = dir_path + "/" + f
+            new_filepath = dir_path + "/" + sub_dir_name + "/" + f
+            try:
+                os.rename(existing_filepath, new_filepath)
+            except OSError:
+                traceback.print_exc()
+                logger.exception("Failed to move files!!!")
+                return False
+        return True
+    else:
+        for f in list_files:
+            existing_filepath = dir_path + "/" + f
+            new_filepath = new_backup_path + "/" + sub_dir_name + "/" + f
+            try:
+                shutil.copy(existing_filepath, new_filepath)
+                print "Copied files to new path"
+            except OSError:
+                logger.exception("Failed to copy files!!!")
+                traceback.print_exc()
+                return False
+        return True
 
 
 if __name__ == "__main__":
@@ -140,13 +155,22 @@ if __name__ == "__main__":
                             new_dir_path = path + new_dir_name
                             if check_dir_exists(new_dir_path):
                                 new_dir_path, dir_name_index = append_num_to_dirname(new_dir_path, dir_name_index)
-                            os.rename(existing_dir_path, new_dir_path)
-                            subdir_path = new_dir_path + "/" + suffices[index]
-                            if not check_dir_exists(subdir_path):
-                                os.mkdir(subdir_path)
-                            if move_file_collection(new_dir_path, suffices[index]):
-                                print("Moved files successfully!!!")
-                            break
+                            if keep_original_files:
+                                os.mkdir(new_dir_path)
+                                subdir_path = new_dir_path + "/" + suffices[index]
+                                if not check_dir_exists(subdir_path):
+                                    os.mkdir(subdir_path)
+                                if move_file_collection(new_dir_path, existing_dir_path, suffices[index]):
+                                    print("Moved files successfully!!!")
+                                break
+                            else:
+                                os.rename(existing_dir_path, new_dir_path)
+                                subdir_path = new_dir_path + "/" + suffices[index]
+                                if not check_dir_exists(subdir_path):
+                                    os.mkdir(subdir_path)
+                                if move_file_collection(new_dir_path, suffices[index]):
+                                    print("Moved files successfully!!!")
+                                break
                     except OSError:
                         traceback.print_exc()
                         logger.exception("Exception occurred:")
