@@ -10,16 +10,26 @@ from logging.handlers import RotatingFileHandler
 path = "/users/deepak.babu/documents/"
 suffices = ["ind", "ukl", "loc", "spn"]
 dir_name_index = 1
-is_log_only = False
-keep_original_files = True
+
+# is_log_only: keep_original_files combinations
+# True:True  -> prints logs
+# True:false -> prints logs(settings is_log_only disables the other flag)
+# false:True -> creates separate file structure based on actual file structure
+# false:false-> makes changes to the actual file structure
+is_log_only = True
+keep_original_files = False
 renamed_folders = {}
 now = datetime.now()
-file_name = now.strftime('logs_%d_%m_%Y,%H-%M.log')
 
+
+# Hyphen(-) is used between Hour and Minutes
+# as MAC OSX doesn't support colon(:) to be used for naming file systems.
+# Only latest version support colon.
+file_name = now.strftime('logs_%d_%m_%Y,%H-%M.log')
 log_formatter = logging.Formatter('[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s')
 log_file = "/users/deepak.babu/documents/" + file_name
-rotation_handler = RotatingFileHandler(log_file, mode='a', maxBytes=5*1024*1024,backupCount=2, encoding=None,
-                                       delay=False)
+rotation_handler = RotatingFileHandler(log_file, mode='a', maxBytes=5*1024*1024, backupCount=2, encoding=None,
+                                       delay=True)
 rotation_handler.setFormatter(log_formatter)
 rotation_handler.setLevel(logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -66,18 +76,28 @@ def append_num_to_dirname(dir_name, dir_num_suffix):
             return temp_dir_name, dir_num_suffix + 1
 
 
-def move_to_config(dir_path, f):
+def move_to_config(dir_path, f, separate_path):
     """
-    Moves properties file to hidden folder config
+    Moves properties file to config folder which is hidden in MAC OSX.
 
+    :param separate_path: Gets the path of the separate directory
     :param dir_path: Gets the basepath of the properties file.
     :param f: Gets the properties file
     """
     config_dir_name = ".config"
-    if not check_dir_exists(dir_path + "/" + config_dir_name):
-        os.mkdir(dir_path + "/" + config_dir_name)
+    if not keep_original_files:
+        if not check_dir_exists(dir_path + "/" + config_dir_name):
+            os.mkdir(dir_path + "/" + config_dir_name)
+    else:
+        if not check_dir_exists(separate_path + "/" + config_dir_name):
+            os.mkdir(separate_path + "/" + config_dir_name)
     try:
-        os.rename(dir_path + "/" + f, dir_path + "/" + config_dir_name + "/" + f)
+        if not keep_original_files:
+            os.rename(dir_path + "/" + f, dir_path + "/" + config_dir_name + "/" + f)
+            return
+        else:
+            shutil.copy(dir_path + "/" + f, separate_path + "/" + config_dir_name + "/" + f)
+            return
     except OSError:
         traceback.print_exc()
         logger.exception(traceback.print_exc())
@@ -85,6 +105,15 @@ def move_to_config(dir_path, f):
 
 
 def check_and_add_pairs_to_map(root_path, the_dir_path, the_striped_dir_name, the_index_appender_value):
+    """
+    Uses dictionaries to keep track of the renamed folder without actually renaming the folders.
+
+    :param root_path:
+    :param the_dir_path:
+    :param the_striped_dir_name:
+    :param the_index_appender_value:
+    :return: returns a path with a new name for the directory.
+    """
     if check_dirname_exists_in_map(root_path + the_striped_dir_name):
         while True:
             temp_name = root_path + the_striped_dir_name + "(" + str(the_index_appender_value) + ")"
@@ -99,43 +128,39 @@ def check_and_add_pairs_to_map(root_path, the_dir_path, the_striped_dir_name, th
         return root_path + the_striped_dir_name
 
 
-def move_file_collection(new_backup_path,dir_path, sub_dir_name):
+def move_file_collection(new_separate_path, dir_path, sub_dir_name):
     """
     Moves all files except properties file into the sub-directory created using the
     base directory suffix.
 
     :param dir_path: Gets the path of the directory
     :param sub_dir_name: Gets the suffix name of the directory
+    :param new_separate_path: Gets the path of the alternate directory
     """
     list_files = os.listdir(dir_path)
-    if not keep_original_files:
-        for f in list_files:
-            if f == sub_dir_name or f == ".config":
-                continue
-            if f.endswith(".properties"):
-                move_to_config(dir_path, f)
-                continue
-            existing_filepath = dir_path + "/" + f
+    new_filepath = ""
+    separate_dir_path = ""
+    for f in list_files:
+        if f == sub_dir_name or f == ".config":
+            continue
+        if f.endswith(".properties"):
+            move_to_config(dir_path, f, new_separate_path)
+            continue
+        existing_filepath = dir_path + "/" + f
+        if not keep_original_files:
             new_filepath = dir_path + "/" + sub_dir_name + "/" + f
-            try:
+        else:
+            separate_dir_path = new_separate_path + "/" + sub_dir_name + "/" + f
+        try:
+            if keep_original_files:
+                shutil.copy(existing_filepath, separate_dir_path)
+            else:
                 os.rename(existing_filepath, new_filepath)
-            except OSError:
-                traceback.print_exc()
-                logger.exception("Failed to move files!!!")
-                return False
-        return True
-    else:
-        for f in list_files:
-            existing_filepath = dir_path + "/" + f
-            new_filepath = new_backup_path + "/" + sub_dir_name + "/" + f
-            try:
-                shutil.copy(existing_filepath, new_filepath)
-                print "Copied files to new path"
-            except OSError:
-                logger.exception("Failed to copy files!!!")
-                traceback.print_exc()
-                return False
-        return True
+        except OSError:
+            traceback.print_exc()
+            logger.exception("Failed to move files!!!")
+            return False
+    return True
 
 
 if __name__ == "__main__":
@@ -168,10 +193,12 @@ if __name__ == "__main__":
                                 subdir_path = new_dir_path + "/" + suffices[index]
                                 if not check_dir_exists(subdir_path):
                                     os.mkdir(subdir_path)
-                                if move_file_collection(new_dir_path, suffices[index]):
+                                if move_file_collection("", new_dir_path, suffices[index]):
                                     print("Moved files successfully!!!")
                                 break
                     except OSError:
                         traceback.print_exc()
                         logger.exception("Exception occurred:")
-    dir_name_index = 1
+    if is_log_only:
+        print "Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)"
+        logger.info("Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)")
