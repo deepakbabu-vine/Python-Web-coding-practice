@@ -142,7 +142,7 @@ def move_file_collection(new_separate_path, dir_path, sub_dir_name):
     new_filepath = ""
     separate_dir_path = ""
     for f in list_files:
-        if f == sub_dir_name or f == ".config":
+        if f == sub_dir_name or f == config_dir_name:
             continue
         if f.endswith(".properties"):
             move_to_config(dir_path, f, new_separate_path)
@@ -178,12 +178,12 @@ def move_files_under_common_directory(new_file_path, target_file_path, directory
         logger.exception("Exception occurred:")
     list_files = os.listdir(target_file_path)
     for f in list_files:
-        if f == ".config":
+        if f == config_dir_name:
             continue
         if f.endswith(".properties"):
             if not check_dir_exists(".config"):
-                os.makedirs(new_file_path + "/" + directory_name + "/.config")
-            shutil.copy(target_file_path + "/" + f, new_file_path + "/" + directory_name + "/" + ".config" + "/" + f)
+                os.makedirs(new_file_path + "/" + directory_name + "/" + config_dir_name)
+            shutil.copy(target_file_path + "/" + f, new_file_path + "/" + directory_name + "/" + config_dir_name + "/" + f)
             continue
         try:
             if os.path.isdir(target_file_path + "/" + f):
