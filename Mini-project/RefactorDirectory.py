@@ -11,6 +11,7 @@ path = "/users/deepak.babu/documents/"
 suffices = ["ind", "ukl", "loc", "spn"]
 dir_name_index = 1
 config_dir_name = ".config"
+rm_actual_file = ""
 
 # is_log_only: keep_original_files combinations
 # True:True  -> prints logs
@@ -222,6 +223,24 @@ if __name__ == "__main__":
                                 logger.exception("Exception occurred:")
                             if move_files_under_common_directory(path + new_dir_name, path + directory, suffices[index]):
                                 print "Moved under a common directory!"
+                                if rm_actual_file == 's':
+                                    break
+                                if not rm_actual_file == 'a':
+                                    print "Do you want to remove this (" + path + directory + ") directory, y/n?"
+                                    print "Remove all folders from here - a"
+                                    print "Skip all folders from here - s"
+                                    rm_actual_file = raw_input("Enter your choice: ")
+                                    if rm_actual_file == "y":
+                                        shutil.rmtree(path + directory)
+                                        rm_actual_file = ""
+                                    elif rm_actual_file == "a":
+                                        shutil.rmtree(path + directory)
+                                    elif rm_actual_file == "s":
+                                        pass
+                                    else:
+                                        rm_actual_file = ""
+                                else:
+                                    shutil.rmtree(path + directory)
                             break
                         else:
                             existing_dir_path = path + directory
