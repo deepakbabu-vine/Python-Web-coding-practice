@@ -16,8 +16,9 @@ dir_name_index = 1
 # True:false -> prints logs(settings is_log_only disables the other flag)
 # false:True -> creates separate file structure based on actual file structure
 # false:false-> makes changes to the actual file structure
-is_log_only = True
+is_log_only = False
 keep_original_files = False
+move_under_common_directory = True
 renamed_folders = {}
 now = datetime.now()
 
@@ -153,13 +154,43 @@ def move_file_collection(new_separate_path, dir_path, sub_dir_name):
             separate_dir_path = new_separate_path + "/" + sub_dir_name + "/" + f
         try:
             if keep_original_files:
-                shutil.copy(existing_filepath, separate_dir_path)
+                if not os.path.isdir(existing_filepath):
+                    shutil.copy(existing_filepath, separate_dir_path)
+                else:
+                    shutil.copytree(existing_filepath, separate_dir_path)
             else:
                 os.rename(existing_filepath, new_filepath)
         except OSError:
             traceback.print_exc()
             logger.exception("Failed to move files!!!")
             return False
+    return True
+
+
+def move_files_under_common_directory(new_file_path, target_file_path, directory_name):
+    try:
+        if not check_dir_exists(new_file_path + "/" + directory_name):
+            os.makedirs(new_file_path + "/" + directory_name)
+        else:
+            return False
+    except OSError:
+        traceback.print_exc()
+        logger.exception("Exception occurred:")
+    list_files = os.listdir(target_file_path)
+    for f in list_files:
+        try:
+            if os.path.isdir(target_file_path + "/" + f):
+                shutil.copytree(target_file_path + "/" + f, new_file_path + "/" + directory_name + "/" + f, False, None)
+            else:
+                shutil.copyfile(target_file_path + "/" + f, new_file_path + "/" + directory_name + "/" + f)
+        except (OSError, IOError):
+            traceback.print_exc()
+            logger.exception("Exception occurred:")
+            continue
+        except:
+            traceback.print_exc()
+            logger.exception("Exception occurred:")
+            continue
     return True
 
 
@@ -175,6 +206,16 @@ if __name__ == "__main__":
                                                                             dir_name_index)
                             print "(", root + directory, ")", "will be renamed to ", "(", new_available_name, ")"
                             logger.debug("(%s) will be renamed to (%s)", root+directory, new_available_name)
+                        elif move_under_common_directory:
+                            try:
+                                if not check_dir_exists(path + new_dir_name):
+                                    os.mkdir(path + new_dir_name)
+                            except OSError:
+                                traceback.print_exc()
+                                logger.exception("Exception occurred:")
+                            if move_files_under_common_directory(path + new_dir_name, path + directory, suffices[index]):
+                                print "Moved under a common directory!"
+                            break
                         else:
                             existing_dir_path = path + directory
                             new_dir_path = path + new_dir_name
@@ -186,7 +227,7 @@ if __name__ == "__main__":
                                 if not check_dir_exists(subdir_path):
                                     os.mkdir(subdir_path)
                                 if move_file_collection(new_dir_path, existing_dir_path, suffices[index]):
-                                    print("Moved files successfully!!!")
+                                    print "Moved files successfully!!!"
                                 break
                             else:
                                 os.rename(existing_dir_path, new_dir_path)
@@ -194,7 +235,9 @@ if __name__ == "__main__":
                                 if not check_dir_exists(subdir_path):
                                     os.mkdir(subdir_path)
                                 if move_file_collection("", new_dir_path, suffices[index]):
-                                    print("Moved files successfully!!!")
+                                    print "Moved files successfully!!!"
+                                else:
+                                    print "Directory already exists"
                                 break
                     except OSError:
                         traceback.print_exc()
