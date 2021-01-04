@@ -10,6 +10,7 @@ from logging.handlers import RotatingFileHandler
 path = "/users/deepak.babu/documents/"
 suffices = ["ind", "ukl", "loc", "spn"]
 dir_name_index = 1
+config_dir_name = ".config"
 
 # is_log_only: keep_original_files combinations
 # True:True  -> prints logs
@@ -85,7 +86,6 @@ def move_to_config(dir_path, f, separate_path):
     :param dir_path: Gets the basepath of the properties file.
     :param f: Gets the properties file
     """
-    config_dir_name = ".config"
     if not keep_original_files:
         if not check_dir_exists(dir_path + "/" + config_dir_name):
             os.mkdir(dir_path + "/" + config_dir_name)
@@ -178,6 +178,13 @@ def move_files_under_common_directory(new_file_path, target_file_path, directory
         logger.exception("Exception occurred:")
     list_files = os.listdir(target_file_path)
     for f in list_files:
+        if f == ".config":
+            continue
+        if f.endswith(".properties"):
+            if not check_dir_exists(".config"):
+                os.makedirs(new_file_path + "/" + directory_name + "/.config")
+            shutil.copy(target_file_path + "/" + f, new_file_path + "/" + directory_name + "/" + ".config" + "/" + f)
+            continue
         try:
             if os.path.isdir(target_file_path + "/" + f):
                 shutil.copytree(target_file_path + "/" + f, new_file_path + "/" + directory_name + "/" + f, False, None)
