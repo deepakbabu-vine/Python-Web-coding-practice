@@ -227,7 +227,7 @@ def create_new_dir(dir_name, path):
 
 if __name__ == "__main__":
     if not reverse_directory_structure:
-        for root, dirs, files in os.walk(path):
+        for root, dirs, dir_inside_main_dir in os.walk(path):
             for directory in dirs:
                 for index in range(len(suffices)):
                     if (directory.rfind(suffices[index])) > 0:
@@ -297,23 +297,30 @@ if __name__ == "__main__":
             print "Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)"
             logger.info("Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)")
     else:
-        target_dir = "temp"
-        destination_path = path + target_dir
-        list_subdir_in_dir = os.listdir(destination_path)
-        for files in list_subdir_in_dir:
-            if files == ".DS_Store":
-                continue
-            dir_name = new_directory_name(files, target_dir, path)
-            if create_new_dir(dir_name, path):
-                list_files_in_subdir = os.listdir(destination_path + "/" + files)
-                for file_index in list_files_in_subdir:
-                    try:
-                        if os.path.isdir(destination_path + "/" + files + "/" + file_index):
-                            shutil.copytree(destination_path + "/" + files + "/" + file_index, path + dir_name + "/" + file_index,
-                                            False, None)
-                        else:
-                            shutil.copyfile(destination_path + "/" + files + "/" + file_index, path + dir_name + "/" + file_index)
-                    except (OSError, IOError):
-                        traceback.print_exc()
-                        logger.exception("Failed to copy files")
-            print "Files moved Successfully!!!"
+        print "Provide the directory to be split?"
+        target_dir = raw_input()
+        if target_dir == "":
+            print "Name cannot be empty"
+        elif check_dir_exists(path + target_dir):
+            destination_path = path + target_dir
+            list_subdir_in_dir = os.listdir(destination_path)
+            for dir_inside_main_dir in list_subdir_in_dir:
+                if dir_inside_main_dir == ".DS_Store":
+                    continue
+                dir_name = new_directory_name(dir_inside_main_dir, target_dir, path)
+                if create_new_dir(dir_name, path):
+                    list_files_in_subdir = os.listdir(destination_path + "/" + dir_inside_main_dir)
+                    for files_inside_subdir in list_files_in_subdir:
+                        try:
+                            if os.path.isdir(destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir):
+                                shutil.copytree(destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir,
+                                                path + dir_name + "/" + files_inside_subdir, False, None)
+                            else:
+                                shutil.copyfile(destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir,
+                                                path + dir_name + "/" + files_inside_subdir)
+                        except (OSError, IOError):
+                            traceback.print_exc()
+                            logger.exception("Failed to copy files")
+                print "Files moved Successfully!!!"
+        else:
+            print "Directory does not exists!!!"
