@@ -21,9 +21,9 @@ rm_actual_file = ""
 is_log_only = False
 keep_original_files = False
 move_under_common_directory = True
+reverse_directory_structure = True
 renamed_folders = {}
 now = datetime.now()
-
 
 # Hyphen(-) is used between Hour and Minutes
 # as MAC OSX doesn't support colon(:) to be used for naming file systems.
@@ -31,7 +31,7 @@ now = datetime.now()
 file_name = now.strftime('logs_%d_%m_%Y,%H-%M.log')
 log_formatter = logging.Formatter('[%(asctime)s] {%(pathname)s:%(lineno)d} %(levelname)s - %(message)s')
 log_file = "/users/deepak.babu/documents/" + file_name
-rotation_handler = RotatingFileHandler(log_file, mode='a', maxBytes=5*1024*1024, backupCount=2, encoding=None,
+rotation_handler = RotatingFileHandler(log_file, mode='a', maxBytes=5 * 1024 * 1024, backupCount=2, encoding=None,
                                        delay=True)
 rotation_handler.setFormatter(log_formatter)
 rotation_handler.setLevel(logging.DEBUG)
@@ -184,7 +184,8 @@ def move_files_under_common_directory(new_file_path, target_file_path, directory
         if f.endswith(".properties"):
             if not check_dir_exists(".config"):
                 os.makedirs(new_file_path + "/" + directory_name + "/" + config_dir_name)
-            shutil.copy(target_file_path + "/" + f, new_file_path + "/" + directory_name + "/" + config_dir_name + "/" + f)
+            shutil.copy(target_file_path + "/" + f,
+                        new_file_path + "/" + directory_name + "/" + config_dir_name + "/" + f)
             continue
         try:
             if os.path.isdir(target_file_path + "/" + f):
@@ -202,72 +203,117 @@ def move_files_under_common_directory(new_file_path, target_file_path, directory
     return True
 
 
+def new_directory_name(files, target_dir, path):
+    dir_index = 1
+    append_file_name = target_dir + "_" + files
+    while True:
+        if check_dir_exists(path + append_file_name):
+            append_file_name = target_dir + "_" + files
+            append_file_name = append_file_name + "(" + str(dir_index) + ")"
+            dir_index += 1
+        else:
+            return append_file_name
+
+
+def create_new_dir(dir_name, path):
+    try:
+        os.mkdir(path + dir_name)
+        return True
+    except (OSError, IOError):
+        traceback.print_exc()
+        logger.exception("Failed to create the directory")
+        return False
+
+
 if __name__ == "__main__":
-    for root, dirs, files in os.walk(path):
-        for directory in dirs:
-            for index in range(len(suffices)):
-                if (directory.rfind(suffices[index])) > 0:
-                    try:
-                        new_dir_name = directory.rstrip(suffices[index]).rstrip("_")
-                        if is_log_only:
-                            new_available_name = check_and_add_pairs_to_map(root, directory, new_dir_name,
-                                                                            dir_name_index)
-                            print "(", root + directory, ")", "will be renamed to ", "(", new_available_name, ")"
-                            logger.debug("(%s) will be renamed to (%s)", root+directory, new_available_name)
-                        elif move_under_common_directory:
-                            try:
-                                if not check_dir_exists(path + new_dir_name):
-                                    os.mkdir(path + new_dir_name)
-                            except OSError:
-                                traceback.print_exc()
-                                logger.exception("Exception occurred:")
-                            if move_files_under_common_directory(path + new_dir_name, path + directory, suffices[index]):
-                                print "Moved under a common directory!"
-                                if rm_actual_file == 's':
-                                    break
-                                if not rm_actual_file == 'a':
-                                    print "Do you want to remove this (" + path + directory + ") directory, y/n?"
-                                    print "Remove all folders from here - a"
-                                    print "Skip all folders from here - s"
-                                    rm_actual_file = raw_input("Enter your choice: ")
-                                    if rm_actual_file == "y":
-                                        shutil.rmtree(path + directory)
-                                        rm_actual_file = ""
-                                    elif rm_actual_file == "a":
-                                        shutil.rmtree(path + directory)
-                                    elif rm_actual_file == "s":
-                                        pass
+    if not reverse_directory_structure:
+        for root, dirs, files in os.walk(path):
+            for directory in dirs:
+                for index in range(len(suffices)):
+                    if (directory.rfind(suffices[index])) > 0:
+                        try:
+                            new_dir_name = directory.rstrip(suffices[index]).rstrip("_")
+                            if is_log_only:
+                                new_available_name = check_and_add_pairs_to_map(root, directory, new_dir_name,
+                                                                                dir_name_index)
+                                print "(", root + directory, ")", "will be renamed to ", "(", new_available_name, ")"
+                                logger.debug("(%s) will be renamed to (%s)", root + directory, new_available_name)
+                            elif move_under_common_directory:
+                                try:
+                                    if not check_dir_exists(path + new_dir_name):
+                                        os.mkdir(path + new_dir_name)
+                                except OSError:
+                                    traceback.print_exc()
+                                    logger.exception("Exception occurred:")
+                                if move_files_under_common_directory(path + new_dir_name, path + directory,
+                                                                     suffices[index]):
+                                    print "Moved under a common directory!"
+                                    if rm_actual_file == 's':
+                                        break
+                                    if not rm_actual_file == 'a':
+                                        print "Do you want to remove this (" + path + directory + ") directory, y/n?"
+                                        print "Remove all folders from here - a"
+                                        print "Skip all folders from here - s"
+                                        rm_actual_file = raw_input("Enter your choice: ")
+                                        if rm_actual_file == "y":
+                                            shutil.rmtree(path + directory)
+                                            rm_actual_file = ""
+                                        elif rm_actual_file == "a":
+                                            shutil.rmtree(path + directory)
+                                        elif rm_actual_file == "s":
+                                            pass
+                                        else:
+                                            rm_actual_file = ""
                                     else:
-                                        rm_actual_file = ""
-                                else:
-                                    shutil.rmtree(path + directory)
-                            break
-                        else:
-                            existing_dir_path = path + directory
-                            new_dir_path = path + new_dir_name
-                            if check_dir_exists(new_dir_path):
-                                new_dir_path, dir_name_index = append_num_to_dirname(new_dir_path, dir_name_index)
-                            if keep_original_files:
-                                os.mkdir(new_dir_path)
-                                subdir_path = new_dir_path + "/" + suffices[index]
-                                if not check_dir_exists(subdir_path):
-                                    os.mkdir(subdir_path)
-                                if move_file_collection(new_dir_path, existing_dir_path, suffices[index]):
-                                    print "Moved files successfully!!!"
+                                        shutil.rmtree(path + directory)
                                 break
                             else:
-                                os.rename(existing_dir_path, new_dir_path)
-                                subdir_path = new_dir_path + "/" + suffices[index]
-                                if not check_dir_exists(subdir_path):
-                                    os.mkdir(subdir_path)
-                                if move_file_collection("", new_dir_path, suffices[index]):
-                                    print "Moved files successfully!!!"
+                                existing_dir_path = path + directory
+                                new_dir_path = path + new_dir_name
+                                if check_dir_exists(new_dir_path):
+                                    new_dir_path, dir_name_index = append_num_to_dirname(new_dir_path, dir_name_index)
+                                if keep_original_files:
+                                    os.mkdir(new_dir_path)
+                                    subdir_path = new_dir_path + "/" + suffices[index]
+                                    if not check_dir_exists(subdir_path):
+                                        os.mkdir(subdir_path)
+                                    if move_file_collection(new_dir_path, existing_dir_path, suffices[index]):
+                                        print "Moved files successfully!!!"
+                                    break
                                 else:
-                                    print "Directory already exists"
-                                break
-                    except OSError:
+                                    os.rename(existing_dir_path, new_dir_path)
+                                    subdir_path = new_dir_path + "/" + suffices[index]
+                                    if not check_dir_exists(subdir_path):
+                                        os.mkdir(subdir_path)
+                                    if move_file_collection("", new_dir_path, suffices[index]):
+                                        print "Moved files successfully!!!"
+                                    else:
+                                        print "Directory already exists"
+                                    break
+                        except OSError:
+                            traceback.print_exc()
+                            logger.exception("Exception occurred:")
+        if is_log_only:
+            print "Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)"
+            logger.info("Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)")
+    else:
+        target_dir = "temp"
+        destination_path = path + target_dir
+        list_subdir_in_dir = os.listdir(destination_path)
+        for files in list_subdir_in_dir:
+            if files == ".DS_Store":
+                continue
+            dir_name = new_directory_name(files, target_dir, path)
+            if create_new_dir(dir_name, path):
+                list_files_in_subdir = os.listdir(destination_path + "/" + files)
+                for file_index in list_files_in_subdir:
+                    try:
+                        if os.path.isdir(destination_path + "/" + files + "/" + file_index):
+                            shutil.copytree(destination_path + "/" + files + "/" + file_index, path + dir_name + "/" + file_index,
+                                            False, None)
+                        else:
+                            shutil.copyfile(destination_path + "/" + files + "/" + file_index, path + dir_name + "/" + file_index)
+                    except (OSError, IOError):
                         traceback.print_exc()
-                        logger.exception("Exception occurred:")
-    if is_log_only:
-        print "Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)"
-        logger.info("Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)")
+                        logger.exception("Failed to copy files")
+            print "Files moved Successfully!!!"
