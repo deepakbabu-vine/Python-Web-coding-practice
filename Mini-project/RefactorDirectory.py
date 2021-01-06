@@ -248,11 +248,26 @@ def verify_before_removing_dir(args_path, args_target_dir):
                 continue
             else:
                 count_missing_file += 1
-                # print colored(255, 0, 0, "file (" + target_file_path + ") is missing!")
-                # print "Do you want to add this file :y/n"
-                # add_file = raw_input()
-                # if add_file == 'y':
-                #     print root_path + "/" +f
+                print colored(255, 0, 0, "file (" + target_file_path + ") is missing!")
+                print "Do you want to add this file :y/n"
+                while True:
+                    add_file = raw_input()
+                    if add_file == 'y':
+                        while True:
+                            try:
+                                shutil.copyfile(root_path + "/" + f, target_file_path)
+                                print "File added"
+                                if not count_missing_file == 0:
+                                    count_missing_file -= 1
+                                break
+                            except IOError:
+                                os.mkdir(path + "/" + create_dir_name)
+                        break
+                    elif add_file == 'n':
+                        print "Skipped!!!"
+                        break
+                    else:
+                        print "Invalid input, enter y/n"
     return not bool(count_missing_file)
 
 
