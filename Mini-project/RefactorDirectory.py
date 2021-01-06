@@ -2,10 +2,12 @@
 
 import os
 import shutil
+import sys
 import traceback
 import logging
 from datetime import datetime
 from logging.handlers import RotatingFileHandler
+from send2trash import send2trash
 
 path = "/users/deepak.babu/documents/"
 suffices = ["ind", "ukl", "loc", "spn"]
@@ -235,6 +237,10 @@ def colored(r, g, b, text):
 
 def verify_before_removing_dir(args_path, args_target_dir):
     count_missing_file = 0
+    if not check_dir_exists(args_path + "/" + args_target_dir):
+        print "Directory Not found!"
+        print "---------"
+        sys.exit(0)
     for root_path, current_dir, check_file in os.walk(args_path + "/" + args_target_dir):
         for f in check_file:
             if f == ".DS_Store":
@@ -269,6 +275,17 @@ def verify_before_removing_dir(args_path, args_target_dir):
                     else:
                         print "Invalid input, enter y/n"
     return not bool(count_missing_file)
+
+
+def get_user_input():
+    while True:
+        user_input = raw_input()
+        if user_input == 'y':
+            return True
+        elif user_input == 'n':
+            return False
+        else:
+            print "Invalid input, enter y/n"
 
 
 if __name__ == "__main__":
@@ -354,12 +371,19 @@ if __name__ == "__main__":
             print "Checking..."
             if verify_before_removing_dir(path, target_dir):
                 print "Safe to delete!!!"
+                print "---------"
+                print "Confirm to delete? y/n"
+                if get_user_input():
+                    send2trash(path+"/"+target_dir)
+                    print "Directory moved to Trash"
+                else:
+                    print "Deletion Aborted!"
             else:
                 print colored(255, 0, 0, "Files are missing...")
                 print "Do you still want to delete it? y/n"
                 force_delete = raw_input()
                 if force_delete == 'y':
-                    shutil.rmtree(path + target_dir)
+                    send2trash(path + target_dir)
                     print colored(255, 0, 0, "Files Deleted!!!")
                 elif force_delete == 'n':
                     print colored(34, 139, 34, "Files not deleted.")
