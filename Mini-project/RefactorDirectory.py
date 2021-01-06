@@ -206,12 +206,16 @@ def move_files_under_common_directory(new_file_path, target_file_path, directory
 def new_directory_name(files, target_dir, path):
     dir_index = 1
     append_file_name = target_dir + "_" + files
+    excepted_dir_name = append_file_name
     while True:
         if check_dir_exists(path + append_file_name):
             append_file_name = target_dir + "_" + files
             append_file_name = append_file_name + "(" + str(dir_index) + ")"
             dir_index += 1
         else:
+            if not excepted_dir_name == append_file_name:
+                logger.info("(%s) has been renamed to (%s) due to duplicate exists", excepted_dir_name,
+                            append_file_name)
             return append_file_name
 
 
@@ -225,9 +229,51 @@ def create_new_dir(dir_name, path):
         return False
 
 
+def colored(r, g, b, text):
+    return "\033[38;2;{};{};{}m{} \033[38;2;255;255;255m".format(r, g, b, text)
+
+
+def verify_before_removing_dir(args_path, args_target_dir):
+    count_missing_file = 0
+    for root_path, current_dir, check_file in os.walk(args_path + "/" + args_target_dir):
+        for f in check_file:
+            if f == ".DS_Store":
+                continue
+            extract_dir_name = root_path.partition(args_target_dir)[2]
+            if extract_dir_name[0] == '/':
+                extract_dir_name = extract_dir_name[1:]
+            create_dir_name = args_target_dir + "_" + extract_dir_name
+            target_file_path = path + "/" + create_dir_name + "/" + f
+            if os.path.isfile(target_file_path):
+                continue
+            else:
+                count_missing_file += 1
+                print colored(255, 0, 0, "file (" + target_file_path + ") is missing!")
+                print "Do you want to add this file :y/n"
+                while True:
+                    add_file = raw_input()
+                    if add_file == 'y':
+                        while True:
+                            try:
+                                shutil.copyfile(root_path + "/" + f, target_file_path)
+                                print "File added"
+                                if not count_missing_file == 0:
+                                    count_missing_file -= 1
+                                break
+                            except IOError:
+                                os.mkdir(path + "/" + create_dir_name)
+                        break
+                    elif add_file == 'n':
+                        print "Skipped!!!"
+                        break
+                    else:
+                        print "Invalid input, enter y/n"
+    return not bool(count_missing_file)
+
+
 if __name__ == "__main__":
     if not reverse_directory_structure:
-        for root, dirs, files in os.walk(path):
+        for root, dirs, dir_inside_main_dir in os.walk(path):
             for directory in dirs:
                 for index in range(len(suffices)):
                     if (directory.rfind(suffices[index])) > 0:
@@ -297,23 +343,55 @@ if __name__ == "__main__":
             print "Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)"
             logger.info("Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)")
     else:
-        target_dir = "temp"
-        destination_path = path + target_dir
-        list_subdir_in_dir = os.listdir(destination_path)
-        for files in list_subdir_in_dir:
-            if files == ".DS_Store":
-                continue
-            dir_name = new_directory_name(files, target_dir, path)
-            if create_new_dir(dir_name, path):
-                list_files_in_subdir = os.listdir(destination_path + "/" + files)
-                for file_index in list_files_in_subdir:
-                    try:
-                        if os.path.isdir(destination_path + "/" + files + "/" + file_index):
-                            shutil.copytree(destination_path + "/" + files + "/" + file_index, path + dir_name + "/" + file_index,
-                                            False, None)
-                        else:
-                            shutil.copyfile(destination_path + "/" + files + "/" + file_index, path + dir_name + "/" + file_index)
-                    except (OSError, IOError):
-                        traceback.print_exc()
-                        logger.exception("Failed to copy files")
-            print "Files moved Successfully!!!"
+        delete_main_directory = True
+        if delete_main_directory:
+            print "provide the directory to be deleted?"
+            target_dir = raw_input()
+            print "This verification process does not verify the contents of any file"
+            print "Checks only the existence of files & directories in the base path"
+            print "Make sure you have splitted the common directory"
+            print "---------"
+            print "Checking..."
+            if verify_before_removing_dir(path, target_dir):
+                print "Safe to delete!!!"
+            else:
+                print colored(255, 0, 0, "Files are missing...")
+                print "Do you still want to delete it? y/n"
+                force_delete = raw_input()
+                if force_delete == 'y':
+                    shutil.rmtree(path + target_dir)
+                    print colored(255, 0, 0, "Files Deleted!!!")
+                elif force_delete == 'n':
+                    print colored(34, 139, 34, "Files not deleted.")
+
+        else:
+            print "Provide the directory to be split?"
+            target_dir = raw_input()
+            if target_dir == "":
+                print "Name cannot be empty"
+            elif check_dir_exists(path + target_dir):
+                destination_path = path + target_dir
+                list_subdir_in_dir = os.listdir(destination_path)
+                for dir_inside_main_dir in list_subdir_in_dir:
+                    if dir_inside_main_dir == ".DS_Store":
+                        continue
+                    dir_name = new_directory_name(dir_inside_main_dir, target_dir, path)
+                    if create_new_dir(dir_name, path):
+                        list_files_in_subdir = os.listdir(destination_path + "/" + dir_inside_main_dir)
+                        for files_inside_subdir in list_files_in_subdir:
+                            try:
+                                if os.path.isdir(
+                                        destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir):
+                                    shutil.copytree(
+                                        destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir,
+                                        path + dir_name + "/" + files_inside_subdir, False, None)
+                                else:
+                                    shutil.copyfile(
+                                        destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir,
+                                        path + dir_name + "/" + files_inside_subdir)
+                            except (OSError, IOError):
+                                traceback.print_exc()
+                                logger.exception("Failed to copy files")
+                    print "Files moved Successfully!!!"
+            else:
+                print "Directory does not exists!!!"
