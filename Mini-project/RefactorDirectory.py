@@ -8,8 +8,8 @@ import logging
 from datetime import datetime
 from logging.handlers import RotatingFileHandler
 from send2trash import send2trash
+import psycopg2
 
-path = "/users/deepak.babu/documents/"
 suffices = ["ind", "ukl", "loc", "spn"]
 dir_name_index = 1
 config_dir_name = ".config"
@@ -304,7 +304,20 @@ def get_user_input():
             print "Invalid input, enter y/n"
 
 
+def get_base_directory_path():
+    try:
+        conn = psycopg2.connect("dbname=Python-Practice user=postgres password=vine@2019")
+        cursor = conn.cursor()
+        cursor.execute("SELECT file_path from file_location")
+        row = cursor.fetchone()
+        for current_row in row:
+            return current_row
+    except:
+        traceback.print_exc()
+
+
 if __name__ == "__main__":
+    path = get_base_directory_path()
     if not reverse_directory_structure:
         for root, dirs, dir_inside_main_dir in os.walk(path):
             for directory in dirs:
