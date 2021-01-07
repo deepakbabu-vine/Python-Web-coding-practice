@@ -1,0 +1,4 @@
+[2021-01-07 15:40:59,042] {/Users/deepak.babu/PycharmProjects/RefactorDirectory/main.py:221} INFO - (temp_ind) has been renamed to (temp_ind(1)) due to duplicate exists
+[2021-01-07 15:40:59,043] {/Users/deepak.babu/PycharmProjects/RefactorDirectory/main.py:221} INFO - (temp_loc) has been renamed to (temp_loc(1)) due to duplicate exists
+[2021-01-07 15:40:59,043] {/Users/deepak.babu/PycharmProjects/RefactorDirectory/main.py:221} INFO - (temp_spn) has been renamed to (temp_spn(1)) due to duplicate exists
+[2021-01-07 15:40:59,043] {/Users/deepak.babu/PycharmProjects/RefactorDirectory/main.py:221} INFO - (temp_ukl) has been renamed to (temp_ukl(1)) due to duplicate exists

@@ -20,10 +20,11 @@ rm_actual_file = ""
 # True:false -> prints logs(settings is_log_only disables the other flag)
 # false:True -> creates separate file structure based on actual file structure
 # false:false-> makes changes to the actual file structure
-is_log_only = False
+is_log_only = True
 keep_original_files = False
 move_under_common_directory = True
 reverse_directory_structure = True
+delete_main_directory = False
 renamed_folders = {}
 now = datetime.now()
 
@@ -42,11 +43,11 @@ logger.setLevel(logging.DEBUG)
 logger.addHandler(rotation_handler)
 
 
-def check_dirname_exists_in_map(the_d):
-    if the_d in renamed_folders.values():
+def check_dirname_exists_in_map(the_directory):
+    if the_directory in renamed_folders.values():
         return True
     else:
-        if check_dir_exists(the_d):
+        if check_dir_exists(the_directory):
             return True
         return False
 
@@ -375,7 +376,6 @@ if __name__ == "__main__":
             print "Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)"
             logger.info("Note: Setting (is_log_only)flag to True disables the flag(keep_original_files)")
     else:
-        delete_main_directory = True
         if delete_main_directory:
             print "provide the directory to be deleted?"
             target_dir = raw_input()
@@ -415,23 +415,27 @@ if __name__ == "__main__":
                 for dir_inside_main_dir in list_subdir_in_dir:
                     if dir_inside_main_dir == ".DS_Store":
                         continue
-                    dir_name = new_directory_name(dir_inside_main_dir, target_dir, path)
-                    if create_new_dir(dir_name, path):
-                        list_files_in_subdir = os.listdir(destination_path + "/" + dir_inside_main_dir)
-                        for files_inside_subdir in list_files_in_subdir:
-                            try:
-                                if os.path.isdir(
-                                        destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir):
-                                    shutil.copytree(
-                                        destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir,
-                                        path + dir_name + "/" + files_inside_subdir, False, None)
-                                else:
-                                    shutil.copyfile(
-                                        destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir,
-                                        path + dir_name + "/" + files_inside_subdir)
-                            except (OSError, IOError):
-                                traceback.print_exc()
-                                logger.exception("Failed to copy files")
-                    print "Files moved Successfully!!!"
+                    if not is_log_only:
+                        dir_name = new_directory_name(dir_inside_main_dir, target_dir, path)
+                        if create_new_dir(dir_name, path):
+                            list_files_in_subdir = os.listdir(destination_path + "/" + dir_inside_main_dir)
+                            for files_inside_subdir in list_files_in_subdir:
+                                try:
+                                    if os.path.isdir(
+                                            destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir):
+                                        shutil.copytree(
+                                            destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir,
+                                            path + dir_name + "/" + files_inside_subdir, False, None)
+                                    else:
+                                        shutil.copyfile(
+                                            destination_path + "/" + dir_inside_main_dir + "/" + files_inside_subdir,
+                                            path + dir_name + "/" + files_inside_subdir)
+                                except (OSError, IOError):
+                                    traceback.print_exc()
+                                    logger.exception("Failed to copy files")
+                        print "Files moved Successfully!!!"
+                    else:
+                        new_directory_name(dir_inside_main_dir, target_dir, path)
+
             else:
                 print "Directory does not exists!!!"
