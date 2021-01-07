@@ -235,6 +235,20 @@ def colored(r, g, b, text):
     return "\033[38;2;{};{};{}m{} \033[38;2;255;255;255m".format(r, g, b, text)
 
 
+def check_latest_dir_available(check_latest_dir):
+    index_appender = 1
+    while True:
+        temp_dir_name = check_latest_dir + "(" + str(index_appender) + ")"
+        if check_dir_exists(path + "/" + temp_dir_name):
+            index_appender += 1
+        else:
+            if index_appender >=2:
+                temp_dir_name = check_latest_dir + "(" + str(index_appender - 1) + ")"
+                return temp_dir_name
+            else:
+                return check_latest_dir
+
+
 def verify_before_removing_dir(args_path, args_target_dir):
     count_missing_file = 0
     if not check_dir_exists(args_path + "/" + args_target_dir):
@@ -249,6 +263,7 @@ def verify_before_removing_dir(args_path, args_target_dir):
             if extract_dir_name[0] == '/':
                 extract_dir_name = extract_dir_name[1:]
             create_dir_name = args_target_dir + "_" + extract_dir_name
+            create_dir_name = check_latest_dir_available(create_dir_name)
             target_file_path = path + "/" + create_dir_name + "/" + f
             if os.path.isfile(target_file_path):
                 continue
@@ -374,8 +389,9 @@ if __name__ == "__main__":
                 print "---------"
                 print "Confirm to delete? y/n"
                 if get_user_input():
-                    send2trash(path+"/"+target_dir)
-                    print "Directory moved to Trash"
+                    shutil.make_archive(path + target_dir, 'zip', path + "/" + target_dir)
+                    send2trash(path + "/" + target_dir)
+                    print "Directory moved to Trash & Zip file created."
                 else:
                     print "Deletion Aborted!"
             else:
