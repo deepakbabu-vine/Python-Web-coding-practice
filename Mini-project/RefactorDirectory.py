@@ -374,8 +374,9 @@ if __name__ == "__main__":
                 print "---------"
                 print "Confirm to delete? y/n"
                 if get_user_input():
+                    shutil.make_archive(path + target_dir, 'zip', path + "/" + target_dir)
                     send2trash(path+"/"+target_dir)
-                    print "Directory moved to Trash"
+                    print "Directory moved to Trash & Zip file created."
                 else:
                     print "Deletion Aborted!"
             else:
