@@ -41,6 +41,9 @@ rotation_handler.setLevel(logging.DEBUG)
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(rotation_handler)
+should_roll_over = os.path.isfile(log_file)
+if should_roll_over:
+    rotation_handler.doRollover()
 
 
 def check_dirname_exists_in_map(the_directory):
@@ -207,6 +210,15 @@ def move_files_under_common_directory(new_file_path, target_file_path, directory
 
 
 def new_directory_name(files, target_dir, path):
+    """
+    Creates a new directory name, by checking whether the
+    directory exists.
+
+    :param files:
+    :param target_dir:
+    :param path:
+    :return:
+    """
     dir_index = 1
     append_file_name = target_dir + "_" + files
     excepted_dir_name = append_file_name
@@ -223,6 +235,13 @@ def new_directory_name(files, target_dir, path):
 
 
 def create_new_dir(dir_name, path):
+    """
+    Creates a new directory.
+
+    :param dir_name:
+    :param path:
+    :return:
+    """
     try:
         os.mkdir(path + dir_name)
         return True
@@ -233,10 +252,21 @@ def create_new_dir(dir_name, path):
 
 
 def colored(r, g, b, text):
+    """
+    Adds colour to the outputed text in console
+
+    :rtype: object
+    """
     return "\033[38;2;{};{};{}m{} \033[38;2;255;255;255m".format(r, g, b, text)
 
 
 def check_latest_dir_available(check_latest_dir):
+    """
+    Check the latest splitted directory
+
+    :param check_latest_dir:
+    :return:
+    """
     index_appender = 1
     while True:
         temp_dir_name = check_latest_dir + "(" + str(index_appender) + ")"
@@ -251,6 +281,12 @@ def check_latest_dir_available(check_latest_dir):
 
 
 def verify_before_removing_dir(args_path, args_target_dir):
+    """
+    Verify the main directory before deleting it.
+    :param args_path:
+    :param args_target_dir:
+    :return:
+    """
     count_missing_file = 0
     if not check_dir_exists(args_path + "/" + args_target_dir):
         print "Directory Not found!"
@@ -294,6 +330,11 @@ def verify_before_removing_dir(args_path, args_target_dir):
 
 
 def get_user_input():
+    """
+    get user input for terminal
+
+    :return:
+    """
     while True:
         user_input = raw_input()
         if user_input == 'y':
