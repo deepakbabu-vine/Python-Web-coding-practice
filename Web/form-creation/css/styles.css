@@ -8,7 +8,35 @@
  #patient-age-year {
     width: 40px;
  }
-
  #patient-age-month, #patient-age-date {
      width: 30px;
+ }
+/* .ground-image {
+    background-image: url("../images/form-background.jpg");
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    margin-top: 0px;
+ } */
+body {
+    background-image: url("../images/form-background.jpg");
+}
+ .form-container {
+    --form-theme-color: #00bcd4;
+    --form-bg-color: rgb(250, 15, 15);
+    --input-text-color: rgb(102, 28, 221);
+    --button-hover: #1125d4;
+    --input-bg-gray: #e5e2e3;
+    border-top: 7px solid var(--form-theme-color);
+    font-size: 1em;
+    font-family: 'Roboto', sans-serif;
+    /* position: relative; */
+    display: block;
+    background-color: var(--form-bg-color);
+    padding: 35px;
+    width: 700px;
+    margin: 30px auto;
+    margin-top: 30px;
  }
