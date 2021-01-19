@@ -150,3 +150,7 @@ body {
     background-color: var(--form-theme-color);
     opacity: 0.5;
 }
+
+#patient-age-year, #patient-age-month, #patient-age-date{
+    border: none;
+}
