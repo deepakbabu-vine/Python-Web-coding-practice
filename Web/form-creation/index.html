@@ -7,7 +7,7 @@
     <link rel = "stylesheet" href = "css/styles.css" type = "text/css"/>
     <script type = "text/javascript" src="js/validation.js"></script>
   </head>
-  <body>
+  <body onload = "currentDate()">
     <div class = "ground-image"></div>
     <div class = "form-container">
     <p><h3>Add a new patient</h3></p>
@@ -25,9 +25,9 @@
     
     <input type = "text" id = "patient-name" name = "patient-name" maxlength = "50" placeholder = "First Name"required><br><br>
 
-    <input type = "text" id = "patient-surname" name = "patient-surname" maxlength = "50" placeholder = "Surname"required><br><br>
+    <input type = "text" id = "patient-surname" name = "patient-surname" maxlength = "50" placeholder = "Surname"required ><br><br>
 
-    <input type = "date" id = "patient-dob" name = "patient-dob"><br><br>
+    <input type = "date" id = "patient-dob" name = "patient-dob" ><br><br>
 
     <div class = "patient-age-dialog" style="display: inline-block;">
       <span><label class = "patient-age">Age:</label>

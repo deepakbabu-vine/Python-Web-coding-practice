@@ -7,3 +7,7 @@ function only_number(evt) {
     }
     return true;
 }
+
+function currentDate() {
+    document.getElementById('patient-dob').value = new Date().toISOString().substring(0, 10);
+}
