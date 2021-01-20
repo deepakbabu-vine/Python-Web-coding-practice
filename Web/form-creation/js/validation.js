@@ -59,3 +59,21 @@ function checkRemainingCharacters(currentInputElement) {
         surnameCounter.innerHTML  = remainingCharacters + "chars. remaining";
     }
 }
+
+function saveToJson() {
+    const urlString = window.location.href;
+    var url =  new URL(urlString);
+    let student = {
+        Prefix: url.searchParams.get("prefix"),
+        Patient_Name: url.searchParams.get("patient-name"),
+        Patient_surname: url.searchParams.get("patient-surname"),
+        Patient_dob: url.searchParams.get("patient-dob"),
+        Patient_marital_status: url.searchParams.get("patient-marital-status"),
+        patient_gender: url.searchParams.get("patient-gender"),
+        Basic_details_of_patient: url.searchParams.get("basic-details-of-patient")
+    };
+    let data = JSON.stringify(student);  
+    console.log(data);
+    localStorage.setItem('form-data', data);
+
+}
