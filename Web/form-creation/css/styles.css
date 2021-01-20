@@ -1,0 +1,177 @@
+@charset "UTF-8";
+@import url("https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css");
+
+.patient-name::before, .patient-surname::before,.patient-dob::before, .patient-gender::before{
+    content: " *";
+    color: red;
+ }
+
+ #patient-age-year {
+    width: 40px;
+ }
+ #patient-age-month, #patient-age-date {
+     width: 30px;
+     border:none;
+ }
+body {
+    background-image: url("../images/form-background.jpg");
+    background-repeat: no-repeat;
+    background-position: fixed;
+    background-attachment: fixed;
+}
+ .form-container {
+    --form-theme-color: #00bcd4;
+    --form-bg-color: white;
+    --input-text-color: rgb(102, 28, 221);
+    --button-hover: #1125d4;
+    --input-bg-gray: #e5e2e3;
+    border-top: 7px solid var(--form-theme-color);
+    font-size: 1em;
+    background-color: var(--form-bg-color);
+    padding: 35px;
+    width: 700px;
+    margin: auto;
+    margin-top: 30px;
+ }
+
+ .form-container input {
+    width: 400px;
+    display: block;
+    border: none;
+    padding: 12px !important;
+    border-bottom: solid 1px var(--form-theme-color);
+    -webkit-transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+    transition: all 0.3s cubic-bezier(0.64, 0.09, 0.08, 1);
+    background-repeat: no-repeat;
+    color: var(--input-text-color);
+}
+
+.form-container ::-webkit-input-placeholder {
+    color: var(--input-text-color)
+}
+
+.form-container ::-moz-input-placeholder {
+    color: var(--input-text-color)
+}
+
+.form-container ::-ms-input-placeholder {
+    color: var(--input-text-color)
+}
+
+
+.form-container input:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.form-container input:focus::-webkit-input-placeholder {
+    color: var(--form-theme-color); /*Color for the text*/
+    font-size: 11px;
+    -webkit-transform: translateY(-20px);
+    transform: translateY(-20px); /*Position an element with its current position as origin.*/
+    visibility: visible !important;
+    -webkit-transition: all 0.3s ease-in-out; /*Animation effects for chrome*/
+    transition: all 0.3s ease-in-out; /* Animation effects*/
+}
+
+.form-container h3 {
+    font-size: 46px; /* size of the text*/
+    line-height: 64px; /* Space between lines*/
+    font-weight: 100; /* Thickness of the text. 400 - normal, 700 - bold*/
+    text-decoration: none;
+    position: relative;
+    margin: 50px 1px 1px;
+}c
+
+.form-container h3:not(.no-underline)::after {
+    content: '';
+    position: relative;
+    display: block;
+    border: 1px solid var(--form-theme-color);
+}
+.form-container input[type = "checkbox"] {
+    margin-left: 0px;
+    -webkit-appearance: none;
+    margin-left: 0px;
+    position: relative;
+    height: 2em;
+    width: 4em;
+    border-radius: 1.5em;
+    background-color: var(--input-bg-gray); 
+    border: none;
+    color: #e07f0f;
+    background-clip: padding-box; /*Clips the background upto the padding box*/
+    vertical-align: middle;
+}
+
+.form-container input[type = "checkbox"]::before {
+    position: absolute;
+    content:"";
+    top: 1px;
+    bottom: 1px;
+    left: 2px;
+    right: 50%;
+    color: var(--input-bg-gray);
+    background-color: white;
+    border-radius: 100%;
+    transition: all 0.5s ease;
+    background-clip: padding-box;
+    z-index: 2;
+}
+
+.form-container input[type = "checkbox"]::after {
+    position: absolute;
+    font-family: "ionicons";
+    content: "\f122\f12a";
+    top: 7px;
+    left: 8px;
+    letter-spacing: 1.1em;
+    z-index: 1;
+    color: white;
+}
+
+.form-container input[type = "checkbox"]:checked {
+    color: white;
+    background-color: var(--form-theme-color);
+    border-color: transparent;
+}
+
+.form-container input[type = "checkbox"]:checked::before {
+    transform: translateX(100%);
+}
+
+#basic-details-of-patient {
+    border: 2px solid rgba(245, 239, 239, 0.397);
+    background-color: var(--form-theme-color);
+    color: white;
+    height: 50px;
+    border-radius: 15px; 
+}
+#basic-details-of-patient:hover {
+    background-color: var(--form-theme-color);
+    opacity: 0.5;
+}
+
+#invalid-date {
+    position: relative;
+    /* display: inline; */
+    bottom: 80px;
+    left: 100px;
+    color:red;
+    border: 3px solid red;
+    border-radius: 5px;
+    width: 423px;
+    height: 10px;
+    background-color: rgb(248, 218, 218);
+}
+
+#popup-arrow {
+    position: relative;
+    width: 0px;
+    height: 0px;
+    right: 20px;
+    bottom: 52px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #f00;
+}

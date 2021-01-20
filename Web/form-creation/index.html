@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      General Reg. - Form Validation
+    </title>
+    <link rel = "stylesheet" href = "css/styles.css" type = "text/css"/>
+    <script type = "text/javascript" src="js/validation.js"></script>
+  </head>
+  <body onload = "currentDate()">
+    <div class = "ground-image"></div>
+    <div class = "form-container">
+    <p><h3>Add a new patient</h3></p>
+    <p>Fill the basic details to register a patient</p>
+    <form action = contact_info.html>
+    <label for = "prefix">Prefix:</label>
+    
+    <select name = "prefix" id = "prefix">
+      <option value = "Mr.">Mr.</option>
+      <option value = "Mrs.">Mrs.</option>
+      <option value = "Master">Master</option>
+      <option value = "Miss">Miss</option>
+      <option value = "B/o.">B/o.</option>
+    </select><br><br>
+    
+    <input type = "text" id = "patient-name" name = "patient-name" maxlength = "50" placeholder = "First Name"required><br><br>
+
+    <input type = "text" id = "patient-surname" name = "patient-surname" maxlength = "50" placeholder = "Surname"required ><br><br>
+
+    <input type = "date" class = "patient-dob" id = "patient-dob" name = "patient-dob" onchange="calculateAge();" ><br>
+  
+    <div id = "invalid-date" hidden>Invalid Birthday Date!</div>
+    <span id = "popup-arrow" hidden></span>
+
+    <div class = "patient-age-dialog" style="display: flex;">
+      <label class = "patient-age">Age:</label>
+      <input type = "text" id = "patient-age-year" name = "patient-age-year" maxlength = "3" disabled>
+      <label class = "patient-age-year">Year</label>
+      <input type = "text" id = "patient-age-month" name = "patient-age-month" maxlength="2" disabled>
+      <label class = "patient-age-month">Month</label>
+      <input type = "text" id = "patient-age-date" name = "patient-age-date" maxlength="2" disabled>
+      <label class = "patient-age-date">Date</label>
+    </div><br><br>
+
+    <label class = "patient-marital-status">Marial Status:</label><br><br>
+    <select name = "patient-marital-status" id = "patient-marital-status">
+    <option value = "nil" selected>Select any option</option>
+    <option value = "Married">Married</option>
+    <option value = "Single">Single</option>
+    <option value = "Divorced">Divorced</option>
+    <option value = "Widow">Widow</option>
+    </select><br><br>
+
+    <label class = "patient-gender">Gender:</label><br><br>
+    <select name = "patient-gender" id = "patient-gender">
+      <option value = "nil" selected>Select any gender</option>
+      <option value = "male">Male</option>
+      <option value = "female">Female</option>
+      <option value = "Neural">Neutral</option>
+    </select><br><br>
+
+    <label>Download?</label>
+    <input type = "checkbox"><br><br>
+    <button type = "submit" name = "basic-details-of-patient" id = "basic-details-of-patient">Save & continue</button>
+    </form>
+  </div>
+  </body>
+</html>

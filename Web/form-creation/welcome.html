@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>
+            Welcome!!!
+        </title>
+    </head>
+    <body>
+        <p id = "url_param"></p>
+    </body>
+    <script>
+        function setCookie(cname, cvalue, exdays) {
+            var date = new Date()
+            console.log(date.getTime() + (exdays * 24 * 60 * 60 * 100));
+            var expiry_date_in_utc = "expires=" + date.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expiry_date_in_utc + ";path = /";
+        }
+        function get_url_parameters()
+        {
+            const urlString = window.location.href;
+            var url = new URL(urlString)
+            var username = url.searchParams.get("username")
+            var password = url.searchParams.get("password")
+            return "<b>Username = </b>" + username;
+        }
+        document.getElementById("url_param").innerHTML = get_url_parameters();
+        setCookie("username", "deepak", 1)
+    </script>
+   
+</html>
