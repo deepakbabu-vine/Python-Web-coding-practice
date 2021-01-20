@@ -22,11 +22,14 @@
       <option value = "Miss">Miss</option>
       <option value = "B/o.">B/o.</option>
     </select><br><br>
-    
-    <input type = "text" id = "patient-name" name = "patient-name" maxlength = "50" placeholder = "First Name"required><br><br>
-
-    <input type = "text" id = "patient-surname" name = "patient-surname" maxlength = "50" placeholder = "Surname"required ><br><br>
-
+    <div class = "namefield" >
+      <input type = "text" id = "patient-name" name = "patient-name" maxlength = "50" placeholder = "First Name" onkeyup="checkRemainingCharacters('name');" required>
+      <span class = "remainging-character-count" id = "name-counter" >50 chrs. remaining</span>
+    </div><br><br>
+      <div class = "surnamefield">
+      <input type = "text" id = "patient-surname" name = "patient-surname" maxlength = "50" placeholder = "Surname" onkeyup="checkRemainingCharacters('surname');" required >
+      <span class = "remainging-character-count" id = "surname-counter" >50 chrs. remaining</span>
+    </div><br><br>
     <input type = "date" class = "patient-dob" id = "patient-dob" name = "patient-dob" onchange="calculateAge();" ><br>
   
     <div id = "invalid-date" hidden>Invalid Birthday Date!</div>

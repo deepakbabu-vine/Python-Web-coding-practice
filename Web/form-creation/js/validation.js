@@ -45,3 +45,17 @@ function calculateAge() {
     toggle_popup_arrow.style.display = "none";
     }
 }
+
+function checkRemainingCharacters(currentInputElement) {
+    var maxLimit = 50;
+    var nameCounter = document.getElementById('name-counter'); 
+    var surnameCounter = document.getElementById('surname-counter'); 
+    if(currentInputElement == "name") {
+        var remainingCharacters = 50-(document.getElementById('patient-name').value.length);
+        nameCounter.innerHTML  = remainingCharacters + "chars. remaining";
+    }
+    if(currentInputElement == "surname") {
+        var remainingCharacters = 50-(document.getElementById('patient-surname').value.length);
+        surnameCounter.innerHTML  = remainingCharacters + "chars. remaining";
+    }
+}
