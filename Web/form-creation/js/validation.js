@@ -74,8 +74,8 @@ function saveToJson() {
         Patient_surname: url.searchParams.get("patient-surname"),
         Patient_dob: url.searchParams.get("patient-dob"),
         Patient_marital_status: url.searchParams.get("patient-marital-status"),
-        patient_gender: url.searchParams.get("patient-gender"),
-        Basic_details_of_patient: url.searchParams.get("basic-details-of-patient")
+        Patient_gender: url.searchParams.get("patient-gender"),
+        Download_form_data: url.searchParams.get("download-form-data")
     };
     let data = JSON.stringify(student);  
     console.log(data);
@@ -83,6 +83,34 @@ function saveToJson() {
         localStorage.removeItem('form-data');
     }
     localStorage.setItem('form-data', data);
+    if(url.searchParams.get("download-form-data")) {
+        var Prefix = url.searchParams.get("prefix");
+        var Patient_Name = url.searchParams.get("patient-name");
+        var Patient_surname = url.searchParams.get("patient-surname");
+        var Patient_dob = url.searchParams.get("patient-dob");
+        var Patient_marital_status =  url.searchParams.get("patient-marital-status");
+        var Patient_gender = url.searchParams.get("patient-gender");
+        let data = 
+        '\r Prefix: ' + Prefix + ' \r\n ' + 
+        'Patient Name: ' + Patient_Name + ' \r\n ' + 
+        'Patient Surname: ' + Patient_surname + ' \r\n ' + 
+        'Patient DOB: ' + Patient_dob + ' \r\n ' + 
+        'Patient marital status: ' + Patient_marital_status + ' \r\n ' + 
+        'Patient_gender: ' + Patient_gender;  
+        const textToBLOB = new Blob([data], { type: 'text/plain' });
+        const fileName = 'formData.txt';	 
+        let downloadLink = document.createElement("a");
+        downloadLink.download = fileName;
+        if (window.webkitURL != null) {
+            downloadLink.href = window.webkitURL.createObjectURL(textToBLOB);
+        }
+        else {
+            downloadLink.href = window.URL.createObjectURL(textToBLOB);
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+        }
+        downloadLink.click(); 
+    }
 }
 
 function getPreviousFormData() {
@@ -94,6 +122,6 @@ function getPreviousFormData() {
         document.getElementById('patient-dob').value = jsonDataFromLocalStorage.Patient_dob;
         document.getElementById('patient-marital-status').value = jsonDataFromLocalStorage.Patient_marital_status;
         document.getElementById('patient-gender').value = jsonDataFromLocalStorage.patient_gender;
-        document.getElementById('basic-details-of-patient').value = jsonDataFromLocalStorage.Basic_details_of_patient;
+        document.getElementById('download-form-data').checked = jsonDataFromLocalStorage.Download_form_data;
     }
 }
