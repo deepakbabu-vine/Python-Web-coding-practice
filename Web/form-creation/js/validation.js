@@ -1,5 +1,10 @@
 'use strict';
 
+function initializeForm() {
+    currentDate();
+    getPreviousFormData();
+}
+
 function only_number(evt) {
     var charCode = evt.which ? evt.which : Event.keyCode
     if (charCode > 31 && (charCode < 48 || charCode > 57)){
@@ -78,5 +83,17 @@ function saveToJson() {
         localStorage.removeItem('form-data');
     }
     localStorage.setItem('form-data', data);
+}
 
+function getPreviousFormData() {
+    if(localStorage.getItem('form-data') !== null){
+        var jsonDataFromLocalStorage = JSON.parse(localStorage.getItem('form-data'));
+        document.getElementById('prefix').value = jsonDataFromLocalStorage.Prefix;
+        document.getElementById('patient-name').value = jsonDataFromLocalStorage.Patient_Name;
+        document.getElementById('patient-surname').value = jsonDataFromLocalStorage.Patient_surname;
+        document.getElementById('patient-dob').value = jsonDataFromLocalStorage.Patient_dob;
+        document.getElementById('patient-marital-status').value = jsonDataFromLocalStorage.Patient_marital_status;
+        document.getElementById('patient-gender').value = jsonDataFromLocalStorage.patient_gender;
+        document.getElementById('basic-details-of-patient').value = jsonDataFromLocalStorage.Basic_details_of_patient;
+    }
 }
