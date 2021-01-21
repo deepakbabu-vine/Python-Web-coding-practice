@@ -74,6 +74,9 @@ function saveToJson() {
     };
     let data = JSON.stringify(student);  
     console.log(data);
+    if(!localStorage.getItem('form-data') == null){
+        localStorage.removeItem('form-data');
+    }
     localStorage.setItem('form-data', data);
 
 }
