@@ -49,6 +49,7 @@ function calculateAge() {
     toggle_error_message.style.display = "none";
     toggle_popup_arrow.style.display = "none";
     }
+    SaveCurrentChangesToJson();
 }
 
 function checkRemainingCharacters(currentInputElement) {
@@ -58,10 +59,12 @@ function checkRemainingCharacters(currentInputElement) {
     if(currentInputElement == "name") {
         var remainingCharacters = 50-(document.getElementById('patient-name').value.length);
         nameCounter.innerHTML  = remainingCharacters + "chars. remaining";
+        SaveCurrentChangesToJson();
     }
     if(currentInputElement == "surname") {
         var remainingCharacters = 50-(document.getElementById('patient-surname').value.length);
         surnameCounter.innerHTML  = remainingCharacters + "chars. remaining";
+        SaveCurrentChangesToJson();
     }
 }
 
@@ -130,4 +133,23 @@ function getPreviousFormData() {
         document.getElementById('patient-gender').value = jsonDataFromLocalStorage.patient_gender;
         document.getElementById('download-form-data').checked = jsonDataFromLocalStorage.Download_form_data;
     }
+}
+
+function SaveCurrentChangesToJson() {
+    var currentData = {
+        Prefix: document.getElementById("prefix").value,
+        Patient_Name: document.getElementById("patient-name").value,
+        Patient_surname: document.getElementById("patient-surname").value,
+        Patient_dob: document.getElementById("patient-dob").value,
+        Patient_marital_status: document.getElementById("patient-marital-status").value,
+        Patient_gender: document.getElementById("patient-gender").value,
+        Download_form_data: document.getElementById("download-form-data").value
+
+    }
+    var JsonData = JSON.stringify(currentData);
+    console.log(currentData);
+    if(!localStorage.getItem('form-data') == null){
+        localStorage.removeItem('form-data');
+    }
+    localStorage.setItem('form-data', JsonData);
 }

@@ -46,7 +46,7 @@
     </div><br><br>
 
     <label class = "patient-marital-status">Marial Status:</label><br><br>
-    <select name = "patient-marital-status" id = "patient-marital-status">
+    <select name = "patient-marital-status" id = "patient-marital-status" onchange="SaveCurrentChangesToJson();">
     <option value = "nil" selected>Select any option</option>
     <option value = "Married">Married</option>
     <option value = "Single">Single</option>
@@ -55,7 +55,7 @@
     </select><br><br>
 
     <label class = "patient-gender">Gender:</label><br><br>
-    <select name = "patient-gender" id = "patient-gender">
+    <select name = "patient-gender" id = "patient-gender" onchange="SaveCurrentChangesToJson();">
       <option value = "nil" selected>Select any gender</option>
       <option value = "male">Male</option>
       <option value = "female">Female</option>
