@@ -118,7 +118,13 @@ function getPreviousFormData() {
         var jsonDataFromLocalStorage = JSON.parse(localStorage.getItem('form-data'));
         document.getElementById('prefix').value = jsonDataFromLocalStorage.Prefix;
         document.getElementById('patient-name').value = jsonDataFromLocalStorage.Patient_Name;
+        if(jsonDataFromLocalStorage.Patient_Name.length > 0){
+            document.getElementById('name-counter').innerHTML = (50 - jsonDataFromLocalStorage.Patient_Name.length) + "chars. renamming";
+        } 
         document.getElementById('patient-surname').value = jsonDataFromLocalStorage.Patient_surname;
+        if(jsonDataFromLocalStorage.Patient_surname.length > 0){
+            document.getElementById('surname-counter').innerHTML = (50 - jsonDataFromLocalStorage.Patient_surname.length) + "chars. renamming";
+        }
         document.getElementById('patient-dob').value = jsonDataFromLocalStorage.Patient_dob;
         document.getElementById('patient-marital-status').value = jsonDataFromLocalStorage.Patient_marital_status;
         document.getElementById('patient-gender').value = jsonDataFromLocalStorage.patient_gender;
