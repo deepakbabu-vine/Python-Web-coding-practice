@@ -159,3 +159,53 @@ function removeJsonData() {
         localStorage.removeItem('form-data');
     }
 }
+
+function addNewRow() {
+    var contactInfoTable = document.getElementById('contact-info');
+    var currentIndex = contactInfoTable.rows.length - 1;
+    var currentRow = contactInfoTable.insertRow(-1);
+    console.log("currentIndex"+ currentIndex);
+    
+    var serialNumber = document.createElement('text');
+    serialNumber.getAttribute('name', "sl" + currentIndex);
+    serialNumber.innerHTML = currentIndex;
+
+    var relationship = document.createElement('select');
+    relationship.setAttribute('name', "relationship" + currentIndex);
+    relationship.value = "relationship" + currentIndex;
+
+    var array = ["Father", "Mother", "Son", "Daughter", "Others"];
+
+    for (var i = 0; i < array.length; i++) {
+        var option = document.createElement("option");
+        option.value = array[i];
+        option.text = array[i];
+        relationship.appendChild(option);
+    }
+
+    var contactName = document.createElement('input');
+    contactName.getAttribute('name', "contact" + currentIndex);
+
+    var mobileNumber = document.createElement('input');
+    mobileNumber.getAttribute('name', "mobile" + currentIndex);
+
+    var deleteIcon = document.createElement("h5");
+    deleteIcon.setAttribute("class", "deleteImage");
+    deleteIcon.innerHTML = '<i class="fa fa-trash"></i>';
+
+    var currentCell = currentRow.insertCell(-1);
+    currentCell.appendChild(serialNumber);
+
+    currentCell = currentRow.insertCell(-1);
+    currentCell.appendChild(relationship);
+
+    currentCell = currentRow.insertCell(-1);
+    currentCell.appendChild(contactName);
+
+    currentCell = currentRow.insertCell(-1);
+    currentCell.appendChild(mobileNumber);
+
+    currentCell = currentRow.insertCell(-1);
+    currentCell.appendChild(deleteIcon);
+
+}
