@@ -122,11 +122,11 @@ function getPreviousFormData() {
         document.getElementById('prefix').value = jsonDataFromLocalStorage.Prefix;
         document.getElementById('patient-name').value = jsonDataFromLocalStorage.Patient_Name;
         if(jsonDataFromLocalStorage.Patient_Name.length > 0){
-            document.getElementById('name-counter').innerHTML = (50 - jsonDataFromLocalStorage.Patient_Name.length) + "chars. renamming";
+            document.getElementById('name-counter').innerHTML = (50 - jsonDataFromLocalStorage.Patient_Name.length) + "chars. remaining";
         } 
         document.getElementById('patient-surname').value = jsonDataFromLocalStorage.Patient_surname;
         if(jsonDataFromLocalStorage.Patient_surname.length > 0){
-            document.getElementById('surname-counter').innerHTML = (50 - jsonDataFromLocalStorage.Patient_surname.length) + "chars. renamming";
+            document.getElementById('surname-counter').innerHTML = (50 - jsonDataFromLocalStorage.Patient_surname.length) + "chars. remaining";
         }
         document.getElementById('patient-dob').value = jsonDataFromLocalStorage.Patient_dob;
         document.getElementById('patient-marital-status').value = jsonDataFromLocalStorage.Patient_marital_status;
@@ -148,8 +148,14 @@ function SaveCurrentChangesToJson() {
     }
     var JsonData = JSON.stringify(currentData);
     console.log(currentData);
-    if(!localStorage.getItem('form-data') == null){
+    if(localStorage.getItem('form-data') !== null){
         localStorage.removeItem('form-data');
     }
     localStorage.setItem('form-data', JsonData);
+}
+
+function removeJsonData() {
+    if(localStorage.getItem('form-data') !== null){
+        localStorage.removeItem('form-data');
+    }
 }
