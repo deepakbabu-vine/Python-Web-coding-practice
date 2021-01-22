@@ -140,14 +140,14 @@ body {
     transform: translateX(100%);
 }
 
-#basic-details-of-patient {
+.basic-details-of-patient {
     border: 2px solid rgba(245, 239, 239, 0.397);
     background-color: var(--form-theme-color);
     color: white;
     height: 50px;
     border-radius: 15px; 
 }
-#basic-details-of-patient:hover {
+.basic-details-of-patient:hover {
     background-color: var(--form-theme-color);
     opacity: 0.5;
 }
