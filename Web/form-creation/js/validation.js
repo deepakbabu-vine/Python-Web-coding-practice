@@ -182,7 +182,7 @@ function addNewRow() {
     var mobileNumber = document.createElement('input');
     mobileNumber.getAttribute('name', "mobile" + currentIndex);
     var deleteIcon = document.createElement("h5");
-    deleteIcon.setAttribute('id', "deleteImage"+currentIndex);
+    deleteIcon.setAttribute('id', currentIndex);
     deleteIcon.innerHTML = '<i class="fa fa-trash"></i>';
     deleteIcon.setAttribute('onclick',"deleteCurrentRow('" + deleteIcon.id + "')");
     var currentCell = currentRow.insertCell(-1);
@@ -197,6 +197,6 @@ function addNewRow() {
     currentCell.appendChild(deleteIcon);
 }
 
-function deleteCurrentRow(f) {
-   document.getElementById('contact-info').deleteRow(2);
+function deleteCurrentRow(deleteButtonId) {
+   document.getElementById('contact-info').deleteRow(deleteButtonId);
 }
