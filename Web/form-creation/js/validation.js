@@ -198,5 +198,10 @@ function addNewRow() {
 }
 
 function deleteCurrentRow(deleteButtonId) {
-   document.getElementById('contact-info').deleteRow(deleteButtonId);
+   document.getElementById('contact-info').deleteRow(parseInt(deleteButtonId) + parseInt(1));
+   var rowCount = document.getElementById('contact-info').rows.length;
+   for(deleteButtonId++ ; deleteButtonId <= rowCount ; deleteButtonId++ ){
+       console.log(deleteButtonId);
+   }
+
 }
