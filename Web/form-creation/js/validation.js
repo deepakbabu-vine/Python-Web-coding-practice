@@ -162,13 +162,14 @@ function removeJsonData() {
 
 function addNewRow() {
     var contactInfoTable = document.getElementById('contact-info');
-    var currentIndex = contactInfoTable.rows.length - 1;
+    var currentIndex = contactInfoTable.rows.length - 2;
     var currentRow = contactInfoTable.insertRow(-1);
     var serialNumber = document.createElement('text');
-    serialNumber.getAttribute('name', "sl" + currentIndex);
-    serialNumber.innerHTML = currentIndex;
+    serialNumber.id = "sl"+currentIndex;
+    serialNumber.innerHTML = parseInt(currentIndex) + 1; 
+    console.log("Added "+serialNumber.id)
     var relationship = document.createElement('select');
-    relationship.setAttribute('name', "relationship" + currentIndex);
+    relationship.id = "relationship" + currentIndex;
     relationship.value = "relationship" + currentIndex;
     var array = ["Father", "Mother", "Son", "Daughter", "Others"];
     for (var i = 0; i < array.length; i++) {
@@ -178,9 +179,9 @@ function addNewRow() {
         relationship.appendChild(option);
     }
     var contactName = document.createElement('input');
-    contactName.getAttribute('name', "contact" + currentIndex);
+    contactName.id = "contact" + currentIndex;
     var mobileNumber = document.createElement('input');
-    mobileNumber.getAttribute('name', "mobile" + currentIndex);
+    mobileNumber.id = "mobile" + currentIndex;
     var deleteIcon = document.createElement("h5");
     deleteIcon.setAttribute('id', currentIndex);
     deleteIcon.innerHTML = '<i class="fa fa-trash"></i>';
@@ -199,9 +200,5 @@ function addNewRow() {
 
 function deleteCurrentRow(deleteButtonId) {
    document.getElementById('contact-info').deleteRow(parseInt(deleteButtonId) + parseInt(1));
-   var rowCount = document.getElementById('contact-info').rows.length;
-   for(deleteButtonId++ ; deleteButtonId <= rowCount ; deleteButtonId++ ){
-       console.log(deleteButtonId);
+   
    }
-
-}
