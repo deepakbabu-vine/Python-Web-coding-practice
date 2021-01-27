@@ -161,13 +161,14 @@ function removeJsonData() {
 }
 
 function addNewRow() {
+
     var contactInfoTable = document.getElementById('contact-info');
-    var currentIndex = contactInfoTable.rows.length - 2;
+    var currentIndex = contactInfoTable.rows.length - 1;
     var currentRow = contactInfoTable.insertRow(-1);
     var serialNumber = document.createElement('text');
     serialNumber.id = "sl"+currentIndex;
-    serialNumber.innerHTML = parseInt(currentIndex) + 1; 
-    console.log("Added "+serialNumber.id)
+    serialNumber.innerHTML = parseInt(currentIndex); 
+    // console.log("Added "+serialNumber.id)
     var relationship = document.createElement('select');
     relationship.id = "relationship" + currentIndex;
     relationship.value = "relationship" + currentIndex;
@@ -199,6 +200,23 @@ function addNewRow() {
 }
 
 function deleteCurrentRow(deleteButtonId) {
-   document.getElementById('contact-info').deleteRow(parseInt(deleteButtonId) + parseInt(1));
-   
-   }
+    try{
+        document.getElementById('contact-info').deleteRow(parseInt(deleteButtonId) + parseInt(1));
+    }
+    catch(exception){
+        document.getElementById('contact-info').deleteRow(parseInt(deleteButtonId));
+    }
+//    console.log(parseInt(deleteButtonId) + parseInt(1));
+    var Table = document.getElementById('contact-info');
+    var rows = Table.rows.length
+    deleteButtonId++;
+    for(var i = deleteButtonId ; i < rows ; i++) {
+        console.log("Next:"+i);
+        var editIdForDeleteButton = document.getElementById(i);
+        editIdForDeleteButton.id = parseInt(i) - 1;
+        editIdForDeleteButton.setAttribute('onclick',"deleteCurrentRow('" + editIdForDeleteButton.id + "')");
+
+        console.log(editIdForDeleteButton);
+        // console.log("New id = " + editIdForDeleteButton.id);
+    }
+}
