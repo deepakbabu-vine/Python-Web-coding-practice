@@ -168,7 +168,6 @@ function addNewRow() {
     var serialNumber = document.createElement('text');
     serialNumber.id = "sl"+currentIndex;
     serialNumber.innerHTML = parseInt(currentIndex); 
-    // console.log("Added "+serialNumber.id)
     var relationship = document.createElement('select');
     relationship.id = "relationship" + currentIndex;
     relationship.value = "relationship" + currentIndex;
@@ -204,11 +203,10 @@ function deleteCurrentRow(deleteButtonId) {
         document.getElementById('contact-info').deleteRow(parseInt(deleteButtonId) + parseInt(1));
     }
     catch(exception){
-        document.getElementById('contact-info').deleteRow(parseInt(deleteButtonId));
+        console.error("Exception Occurred: " + exception.stack);
     }
-//    console.log(parseInt(deleteButtonId) + parseInt(1));
     var Table = document.getElementById('contact-info');
-    var rows = Table.rows.length
+    var rows = Table.rows.length;
     deleteButtonId++;
     for(var i = deleteButtonId ; i < rows ; i++) {
         console.log("Next:"+i);
@@ -216,7 +214,5 @@ function deleteCurrentRow(deleteButtonId) {
         editIdForDeleteButton.id = parseInt(i) - 1;
         editIdForDeleteButton.setAttribute('onclick',"deleteCurrentRow('" + editIdForDeleteButton.id + "')");
 
-        console.log(editIdForDeleteButton);
-        // console.log("New id = " + editIdForDeleteButton.id);
     }
 }
