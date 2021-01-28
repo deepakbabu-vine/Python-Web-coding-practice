@@ -188,3 +188,44 @@ body {
     color: gray;
 }
 
+#contact-info {
+    width: 100%;
+    border: rgb(201, 199, 199) solid 2px;
+    border-radius: 3px;
+    border-collapse: separate;
+}
+
+th {
+    border-collapse: separate;
+    background-color: rgb(225, 225, 225);
+    color:  rgb(41, 150, 204);
+    font-family: Arial, Helvetica, sans-serif;
+    /* border: rgb(197, 42, 42) solid 2px; */
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+}
+
+tr:nth-child(odd) {
+    background-color: rgba(235, 232, 232, 0.993);
+}
+
+tr:nth-child(even) {
+    background-color: rgb(238, 238, 238);
+}
+
+th td{
+    border: rgb(201, 199, 199) solid 1px;
+}
+
+#contact-info thead tr {
+    border: rgb(41, 150, 204) solid 1px;
+}
+
+#contact-info td { 
+    border: rgb(201, 199, 199) solid 1px;
+} 
+
+tr:hover { background: rgb(255, 252, 209) }
+
+/* tr:hover td { background: transparent; } */

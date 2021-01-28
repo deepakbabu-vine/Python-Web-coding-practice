@@ -159,3 +159,64 @@ function removeJsonData() {
         localStorage.removeItem('form-data');
     }
 }
+
+function addNewRow() {
+
+    var contactInfoTable = document.getElementById('contact-info');
+    var currentIndex = contactInfoTable.rows.length - 1;
+    if (currentIndex > 5) {
+        alert("Max limit of 5 rows reached!");
+        return;
+    }
+    var currentRow = contactInfoTable.insertRow(-1);
+    var serialNumber = document.createElement('text');
+    serialNumber.id = "sl"+currentIndex;
+    serialNumber.innerHTML = parseInt(currentIndex); 
+    var relationship = document.createElement('select');
+    relationship.id = "relationship" + currentIndex;
+    relationship.value = "relationship" + currentIndex;
+    var array = ["Father", "Mother", "Son", "Daughter", "Others"];
+    for (var i = 0; i < array.length; i++) {
+        var option = document.createElement("option");
+        option.value = array[i];
+        option.text = array[i];
+        relationship.appendChild(option);
+    }
+    var contactName = document.createElement('input');
+    contactName.id = "contact" + currentIndex;
+    var mobileNumber = document.createElement('input');
+    mobileNumber.id = "mobile" + currentIndex;
+    var deleteIcon = document.createElement("h5");
+    deleteIcon.setAttribute('id', currentIndex);
+    deleteIcon.innerHTML = '<i class="fa fa-trash"></i>';
+    deleteIcon.setAttribute('onclick',"deleteCurrentRow('" + deleteIcon.id + "')");
+    var currentCell = currentRow.insertCell(-1);
+    currentCell.appendChild(serialNumber);
+    currentCell = currentRow.insertCell(-1);
+    currentCell.appendChild(relationship);
+    currentCell = currentRow.insertCell(-1);
+    currentCell.appendChild(contactName);
+    currentCell = currentRow.insertCell(-1);
+    currentCell.appendChild(mobileNumber);
+    currentCell = currentRow.insertCell(-1);
+    currentCell.appendChild(deleteIcon);
+}
+
+function deleteCurrentRow(deleteButtonId) {
+    try{
+        document.getElementById('contact-info').deleteRow(parseInt(deleteButtonId) + parseInt(1));
+    }
+    catch(exception){
+        console.error("Exception Occurred: " + exception.stack);
+    }
+    var Table = document.getElementById('contact-info');
+    var rows = Table.rows.length;
+    deleteButtonId++;
+    for(var i = deleteButtonId ; i < rows ; i++) {
+        console.log("Next:"+i);
+        var editIdForDeleteButton = document.getElementById(i);
+        editIdForDeleteButton.id = parseInt(i) - 1;
+        editIdForDeleteButton.setAttribute('onclick',"deleteCurrentRow('" + editIdForDeleteButton.id + "')");
+
+    }
+}
