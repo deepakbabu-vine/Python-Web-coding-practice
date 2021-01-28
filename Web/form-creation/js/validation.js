@@ -164,6 +164,10 @@ function addNewRow() {
 
     var contactInfoTable = document.getElementById('contact-info');
     var currentIndex = contactInfoTable.rows.length - 1;
+    if (currentIndex > 5) {
+        alert("Max limit of 5 rows reached!");
+        return;
+    }
     var currentRow = contactInfoTable.insertRow(-1);
     var serialNumber = document.createElement('text');
     serialNumber.id = "sl"+currentIndex;
