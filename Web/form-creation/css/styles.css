@@ -228,4 +228,12 @@ th td{
 
 tr:hover { background: rgb(255, 252, 209) }
 
-/* tr:hover td { background: transparent; } */
+.btn{
+    background-color: rgb(41, 150, 204);
+    color: rgb(255, 255, 255);
+}   
+
+.btn:hover {
+    color:rgb(255, 255, 255);
+    opacity: 0.8;
+}

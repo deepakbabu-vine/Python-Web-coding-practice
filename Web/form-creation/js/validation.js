@@ -220,3 +220,19 @@ function deleteCurrentRow(deleteButtonId) {
 
     }
 }
+
+function resetRow() {
+    var contactTable = document.getElementById('contact-info');
+    var totalRow = contactTable.rows.length - 1;
+    for (var i = 1 ; i <= totalRow ; i++) {
+        try{
+            contactTable.deleteRow(i);
+        }
+        catch(e) {
+            resetRow(); //Recursive function is used before rows count changes everytime, so deleted only odd/even rows.
+        }
+    }
+    if(contactTable.rows.length <= 1) {
+        addNewRow();
+    }
+}
