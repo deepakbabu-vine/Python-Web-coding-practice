@@ -233,6 +233,6 @@ function resetRow() {
         }
     }
     if(contactTable.rows.length <= 1) {
-        addNewRow(true);
+        addNewRow();
     }
 }
