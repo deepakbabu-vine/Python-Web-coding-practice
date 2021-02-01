@@ -204,7 +204,7 @@ function addNewRow() {
 
 function deleteCurrentRow(deleteButtonId) {
     try{
-        document.getElementById('contact-info').deleteRow(parseInt(deleteButtonId) + parseInt(1));
+        document.getElementById('contact-info').deleteRow(deleteButtonId);
     }
     catch(exception){
         console.error("Exception Occurred: " + exception.stack);
@@ -212,7 +212,7 @@ function deleteCurrentRow(deleteButtonId) {
     var Table = document.getElementById('contact-info');
     var rows = Table.rows.length;
     deleteButtonId++;
-    for(var i = deleteButtonId ; i < rows ; i++) {
+    for(var i = deleteButtonId ; i <= rows ; i++) {
         console.log("Next:"+i);
         var editIdForDeleteButton = document.getElementById(i);
         editIdForDeleteButton.id = parseInt(i) - 1;
@@ -235,4 +235,18 @@ function resetRow() {
     if(contactTable.rows.length <= 1) {
         addNewRow();
     }
+}
+
+function saveTableData() {
+    var refTab=document.getElementById("contact-info")
+  var  row;
+  var col;
+  // Loop through all rows and columns of the table and popup alert with the value
+  // /content of each cell.
+  for ( var i = 0; row = refTab.rows[i]; i++ ) {
+     row = refTab.rows[i];
+     for ( var j = 0; col = row.cells[j]; j++ ) {
+        alert(col.firstChild.nodeValue);
+     }
+  }
 }
