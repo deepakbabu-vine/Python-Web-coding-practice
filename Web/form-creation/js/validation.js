@@ -238,15 +238,29 @@ function resetRow() {
 }
 
 function saveTableData() {
-    var refTab=document.getElementById("contact-info")
-  var  row;
-  var col;
-  // Loop through all rows and columns of the table and popup alert with the value
-  // /content of each cell.
-  for ( var i = 0; row = refTab.rows[i]; i++ ) {
-     row = refTab.rows[i];
-     for ( var j = 0; col = row.cells[j]; j++ ) {
-        alert(col.firstChild.nodeValue);
-     }
-  }
+    var n,m;
+    var table = document.getElementById('contact-info');
+    for (var r = 1, n = table.rows.length; r < n; r++) {
+        for (var c = 1, m = table.rows[r].cells.length; c < m - 1; c++) {
+            if(c == 1){
+                // var selectedID = document.getElementById('relationship1');
+                // var opt = selectedID.options[selectedID.selectedIndex];
+                // console.log(opt.value);
+                var ttid = table.rows[r].cells[c].innerHTML;
+                var thttt = ttid.indexOf("\"");       
+                // var pos2 = ttid.indexOf(" ", pos1 + 1);
+                console.log(thttt);
+                var thttts = ttid.substring(thttt);
+                console.log(thttts);
+                // var textbox = ttid[0].querySelector( "input[type='text']" ); //will return input box inside the text
+                // var select = ttid.querySelector( "select" ); //will return dropdown inside the text
+                // console.log("t:"+textbox);
+                // console.log("s:"+select);
+
+            }    
+            else {
+                console.log(table.rows[r].cells[c].firstChild.value);
+            }
+        }
+    }
 }
