@@ -163,7 +163,7 @@ function removeJsonData() {
 function addNewRow() {
 
     var contactInfoTable = document.getElementById('contact-info');
-    var currentIndex = contactInfoTable.rows.length - 1;
+    var currentIndex = contactInfoTable.rows.length;
     if (currentIndex > 5) {
         alert("Max limit of 5 rows reached!");
         return;
@@ -233,6 +233,6 @@ function resetRow() {
         }
     }
     if(contactTable.rows.length <= 1) {
-        addNewRow();
+        addNewRow(true);
     }
 }
