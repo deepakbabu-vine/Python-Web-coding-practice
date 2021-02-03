@@ -239,19 +239,37 @@ function resetRow() {
 
 function saveTableData() {
     var n,m;
-    var tableData = "Relationship,Name,mobile\\n";
+    var tableData = "Relationship,Name,mobile\n";
     var table = document.getElementById('contact-info');
     for (var r = 1, n = table.rows.length; r < n; r++) {
         for (var c = 1, m = table.rows[r].cells.length; c < m - 1; c++) {
             if(c == 1){
                 var selectedOptionElement = table.rows[r].cells[c].querySelector("select");
                 var optionSelected = selectedOptionElement.options[selectedOptionElement.selectedIndex];
-                console.log(optionSelected.value);
+                tableData = tableData + optionSelected.value + ",";
             }    
             else {
                 tableData = tableData + table.rows[r].cells[c].firstChild.value + ","; 
             }
         }
+        tableData = tableData.slice(0, -1);
+        tableData = tableData + "\n";
     }
-    console.log(tableData);
+    var SplitDataRowWise = tableData.split(/\r\n|\n/);
+    var tableHeader = SplitDataRowWise[0].split(",");
+    var tableResult =[];
+
+    for (var i = 1; i < SplitDataRowWise.length; i++) {
+      var cellValue = SplitDataRowWise[i].split(',');
+      var tempObject = {};
+      for ( var j=0; j < tableHeader.length; j++ ){
+        tempObject[tableHeader[j]] = cellValue[j];
+      }
+      tableResult.push(tempObject);
+    }
+   var tableJsonData = JSON.stringify(tableResult, null, 2);
+   console.log("Final JSON: " + tableJsonData);
+
+    
+
 }
