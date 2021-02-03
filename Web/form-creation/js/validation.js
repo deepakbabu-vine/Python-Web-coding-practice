@@ -235,6 +235,10 @@ function resetRow() {
     if(contactTable.rows.length <= 1) {
         addNewRow();
     }
+    if(localStorage.getItem('table-data') !== null) {
+        localStorage.removeItem('table-data');
+    }
+
 }
 
 function saveTableData() {
@@ -268,9 +272,9 @@ function saveTableData() {
       }
       tableResult.push(tempObject);
     }
-   var tableJsonData = JSON.stringify(tableResult, null, 2);
-   if(localStorage.getItem('table-data') !== null){
-    localStorage.removeItem('table-data');
+    var tableJsonData = JSON.stringify(tableResult, null, 2);
+    if(localStorage.getItem('table-data') !== null){
+        localStorage.removeItem('table-data');
     }
     localStorage.setItem('table-data', tableJsonData);
 }
