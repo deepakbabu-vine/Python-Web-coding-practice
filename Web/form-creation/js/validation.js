@@ -81,7 +81,6 @@ function saveToJson() {
         Download_form_data: url.searchParams.get("download-form-data")
     };
     let data = JSON.stringify(student);  
-    console.log(data);
     if(!localStorage.getItem('form-data') == null){
         localStorage.removeItem('form-data');
     }
@@ -147,7 +146,6 @@ function SaveCurrentChangesToJson() {
 
     }
     var JsonData = JSON.stringify(currentData);
-    console.log(currentData);
     if(localStorage.getItem('form-data') !== null){
         localStorage.removeItem('form-data');
     }
@@ -213,7 +211,6 @@ function deleteCurrentRow(deleteButtonId) {
     var rows = Table.rows.length;
     deleteButtonId++;
     for(var i = deleteButtonId ; i <= rows ; i++) {
-        console.log("Next:"+i);
         var editIdForDeleteButton = document.getElementById(i);
         editIdForDeleteButton.id = parseInt(i) - 1;
         editIdForDeleteButton.setAttribute('onclick',"deleteCurrentRow('" + editIdForDeleteButton.id + "')");
@@ -243,7 +240,7 @@ function resetRow() {
 
 function saveTableData() {
     var n,m;
-    var tableData = "Relationship,Name,mobile\n";
+    var tableData = "Relationship,Name,Mobile\n";
     var table = document.getElementById('contact-info');
     for (var r = 1, n = table.rows.length; r < n; r++) {
         for (var c = 1, m = table.rows[r].cells.length; c < m - 1; c++) {
@@ -277,4 +274,29 @@ function saveTableData() {
         localStorage.removeItem('table-data');
     }
     localStorage.setItem('table-data', tableJsonData);
+}
+
+function retrieveTableDataFromJson() {
+    var selectTableCell;
+    var currentRowIndex = 1;
+    if(localStorage.getItem('table-data') == null) {
+        return;
+    }
+    var tableDataInJson  = localStorage.getItem('table-data');
+    var tableDataInArray = JSON.parse(tableDataInJson);
+    var table = document.getElementById('contact-info');
+    for (var arrayIndex = 0; arrayIndex <tableDataInArray.length; arrayIndex++){
+        if(arrayIndex !== 0){
+            addNewRow();
+            currentRowIndex++;
+        }  
+        selectTableCell = table.rows[currentRowIndex].cells[1].querySelector("select");
+        selectTableCell.value = tableDataInArray[arrayIndex].Relationship;
+
+        selectTableCell = table.rows[currentRowIndex].cells[2].querySelector("input");
+        selectTableCell.value = tableDataInArray[arrayIndex].Name;
+
+        selectTableCell = table.rows[currentRowIndex].cells[3].querySelector("input");
+        selectTableCell.value = tableDataInArray[arrayIndex].Mobile;
+    }
 }
