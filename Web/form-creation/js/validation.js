@@ -255,6 +255,7 @@ function saveTableData() {
         tableData = tableData.slice(0, -1);
         tableData = tableData + "\n";
     }
+    tableData = tableData.trim();
     var SplitDataRowWise = tableData.split(/\r\n|\n/);
     var tableHeader = SplitDataRowWise[0].split(",");
     var tableResult =[];
