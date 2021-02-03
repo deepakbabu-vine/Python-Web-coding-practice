@@ -81,7 +81,6 @@ function saveToJson() {
         Download_form_data: url.searchParams.get("download-form-data")
     };
     let data = JSON.stringify(student);  
-    console.log(data);
     if(!localStorage.getItem('form-data') == null){
         localStorage.removeItem('form-data');
     }
@@ -147,7 +146,6 @@ function SaveCurrentChangesToJson() {
 
     }
     var JsonData = JSON.stringify(currentData);
-    console.log(currentData);
     if(localStorage.getItem('form-data') !== null){
         localStorage.removeItem('form-data');
     }
@@ -163,7 +161,7 @@ function removeJsonData() {
 function addNewRow() {
 
     var contactInfoTable = document.getElementById('contact-info');
-    var currentIndex = contactInfoTable.rows.length - 1;
+    var currentIndex = contactInfoTable.rows.length;
     if (currentIndex > 5) {
         alert("Max limit of 5 rows reached!");
         return;
@@ -204,7 +202,7 @@ function addNewRow() {
 
 function deleteCurrentRow(deleteButtonId) {
     try{
-        document.getElementById('contact-info').deleteRow(parseInt(deleteButtonId) + parseInt(1));
+        document.getElementById('contact-info').deleteRow(deleteButtonId);
     }
     catch(exception){
         console.error("Exception Occurred: " + exception.stack);
@@ -212,11 +210,93 @@ function deleteCurrentRow(deleteButtonId) {
     var Table = document.getElementById('contact-info');
     var rows = Table.rows.length;
     deleteButtonId++;
-    for(var i = deleteButtonId ; i < rows ; i++) {
-        console.log("Next:"+i);
+    for(var i = deleteButtonId ; i <= rows ; i++) {
         var editIdForDeleteButton = document.getElementById(i);
         editIdForDeleteButton.id = parseInt(i) - 1;
         editIdForDeleteButton.setAttribute('onclick',"deleteCurrentRow('" + editIdForDeleteButton.id + "')");
 
+    }
+}
+
+function resetRow() {
+    var contactTable = document.getElementById('contact-info');
+    var totalRow = contactTable.rows.length - 1;
+    for (var i = 1 ; i <= totalRow ; i++) {
+        try{
+            contactTable.deleteRow(i);
+        }
+        catch(e) {
+            resetRow(); //Recursive function is used before rows count changes everytime, so deleted only odd/even rows.
+        }
+    }
+    if(contactTable.rows.length <= 1) {
+        addNewRow();
+    }
+    if(localStorage.getItem('table-data') !== null) {
+        localStorage.removeItem('table-data');
+    }
+
+}
+
+function saveTableData() {
+    var n,m;
+    var tableData = "Relationship,Name,Mobile\n";
+    var table = document.getElementById('contact-info');
+    for (var r = 1, n = table.rows.length; r < n; r++) {
+        for (var c = 1, m = table.rows[r].cells.length; c < m - 1; c++) {
+            if(c == 1){
+                var selectedOptionElement = table.rows[r].cells[c].querySelector("select");
+                var optionSelected = selectedOptionElement.options[selectedOptionElement.selectedIndex];
+                tableData = tableData + optionSelected.value + ",";
+            }    
+            else {
+                tableData = tableData + table.rows[r].cells[c].firstChild.value + ","; 
+            }
+        }
+        tableData = tableData.slice(0, -1);
+        tableData = tableData + "\n";
+    }
+    tableData = tableData.trim();
+    var SplitDataRowWise = tableData.split(/\r\n|\n/);
+    var tableHeader = SplitDataRowWise[0].split(",");
+    var tableResult =[];
+
+    for (var i = 1; i < SplitDataRowWise.length; i++) {
+      var cellValue = SplitDataRowWise[i].split(',');
+      var tempObject = {};
+      for ( var j=0; j < tableHeader.length; j++ ){
+        tempObject[tableHeader[j]] = cellValue[j];
+      }
+      tableResult.push(tempObject);
+    }
+    var tableJsonData = JSON.stringify(tableResult, null, 2);
+    if(localStorage.getItem('table-data') !== null){
+        localStorage.removeItem('table-data');
+    }
+    localStorage.setItem('table-data', tableJsonData);
+}
+
+function retrieveTableDataFromJson() {
+    var selectTableCell;
+    var currentRowIndex = 1;
+    if(localStorage.getItem('table-data') == null) {
+        return;
+    }
+    var tableDataInJson  = localStorage.getItem('table-data');
+    var tableDataInArray = JSON.parse(tableDataInJson);
+    var table = document.getElementById('contact-info');
+    for (var arrayIndex = 0; arrayIndex <tableDataInArray.length; arrayIndex++){
+        if(arrayIndex !== 0){
+            addNewRow();
+            currentRowIndex++;
+        }  
+        selectTableCell = table.rows[currentRowIndex].cells[1].querySelector("select");
+        selectTableCell.value = tableDataInArray[arrayIndex].Relationship;
+
+        selectTableCell = table.rows[currentRowIndex].cells[2].querySelector("input");
+        selectTableCell.value = tableDataInArray[arrayIndex].Name;
+
+        selectTableCell = table.rows[currentRowIndex].cells[3].querySelector("input");
+        selectTableCell.value = tableDataInArray[arrayIndex].Mobile;
     }
 }
