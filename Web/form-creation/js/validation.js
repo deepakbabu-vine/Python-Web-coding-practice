@@ -269,8 +269,8 @@ function saveTableData() {
       tableResult.push(tempObject);
     }
    var tableJsonData = JSON.stringify(tableResult, null, 2);
-   console.log("Final JSON: " + tableJsonData);
-
-    
-
+   if(localStorage.getItem('table-data') !== null){
+    localStorage.removeItem('table-data');
+    }
+    localStorage.setItem('table-data', tableJsonData);
 }
