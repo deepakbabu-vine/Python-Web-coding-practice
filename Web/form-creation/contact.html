@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Family information
+    </title>
+    <!-- <link rel = "stylesheet" href="bootstrap/css/bootstrap.min.css";>
+    <script type = "text/javascript" src = "bootstrap/js/bootstrap.min.js"></script> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel = "stylesheet" href = "css/styles.css" type = "text/css"/>
+</head>
+<body onload = "retrieveTableDataFromJson();">
+    <div class="container">
+        <h1>Contact Information</h1>    
+        <span style = "display: flex;">
+            <p class = "col-lg-11">Please enter your contact information</p>
+            <a href="#" class = "col-lg-1" id = "add-new-row-in-table" onclick="addNewRow();">Add Row</a></span>
+        <table class = "table table-bordered" id = "contact-info">
+            <thead>
+                <tr>
+                    <th>Sl.No.</th>
+                    <th>Relationship</th>
+                    <th>Name</th>
+                    <th>Mobile No.</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tr>
+                <td id = 'sl1'>1</td>
+                <td >
+                    <select id = "relationship1">
+                        <option value = "Father">Father</option>
+                        <option value = "Mother">Mother</option>
+                        <option value = "Son">Son</option>
+                        <option value = "Daughter">Daughter</option>
+                        <option value = "Others">Others</option>
+                    </select>
+                </td>
+
+                <td><input id = 'contact1' type = "text"></td>
+                <td><input id = 'mobile1' type = "number"></td>
+                <td><i class = "fa fa-trash" onclick="deleteCurrentRow(1);"></i></td>
+            </tr>
+        </table>
+        <button type = "button" class = "btn save-button" onclick = "saveTableData();">Save</button>
+        <button type = "button" class = "btn reset-button" onclick="resetRow();">Reset</button>
+      </div>
+      <script type = "text/javascript" src="js/validation.js"></script>
+</body>
+</html>
