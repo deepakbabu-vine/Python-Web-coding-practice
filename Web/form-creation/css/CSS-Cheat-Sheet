@@ -1,0 +1,11 @@
+############################################CSS CHEAT SHEET############################################
+
+This file contains the important points and tips, which as to be followed while working in 
+CSS & SCSS files.
+
+Point #1:
+    Float property cannot be used for absolutely positioned element(s).
+
+Point #2:
+    When trying to position div elements horizontally use "Float" property.
+
