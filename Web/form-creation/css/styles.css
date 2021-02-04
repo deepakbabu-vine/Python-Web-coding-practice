@@ -237,3 +237,37 @@ tr:hover { background: rgb(255, 252, 209) }
     color:rgb(255, 255, 255);
     opacity: 0.8;
 }
+/*############## Top-Menu ############# */
+#top-menu {
+    background: #000;
+    padding: 5px 25px 2px 25px;
+    font-size: 0.9em;
+}
+
+#top-menu a{
+    color: #9da2a6;
+}
+
+#table-menu ol, ul {
+    margin-bottom: 3px;
+}
+
+#top-menu li {
+    padding-top: 7px;
+    display: inline;    
+    margin-right: 15px;
+}
+
+#account {
+    float: right; /* Position: absolute ignores the float property*/   
+}
+
+#logged-by {
+    float: right;
+    color: #FFF;
+}
+
+#top-menu a:hover, a:visited, a:active, a:focus {
+    color: #FFF;
+    text-decoration: none;
+}

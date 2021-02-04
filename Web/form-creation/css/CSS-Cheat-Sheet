@@ -9,3 +9,6 @@ Point #1:
 Point #2:
     When trying to position div elements horizontally use "Float" property.
 
+Point #3:
+    You can use only first (3) characters if the hex code is same(white, black, grey) / basic hex codes(red, blue, green).
+
