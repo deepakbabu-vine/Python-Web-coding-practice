@@ -267,6 +267,10 @@ tr:hover { background: rgb(255, 252, 209) }
     color: #FFF;
 }
 
+#logged-by a{
+    margin-left: 8px;
+}
+
 #top-menu a:hover, a:visited, a:active, a:focus {
     color: #FFF;
     text-decoration: none;
@@ -280,5 +284,20 @@ tr:hover { background: rgb(255, 252, 209) }
 #add-new-row-in-table:hover {
     color:rgb(0, 136, 255);
     text-decoration: none;
+}
+
+#page-header img {
+    margin-left: 10px;
+    width: 40px;
+}
+
+#page-header {
+    background-color:rgb(41,51,58);
+    color:white;
+    padding: 20px;
+}
+
+#quick-search {
+    float: right; 
 }
 

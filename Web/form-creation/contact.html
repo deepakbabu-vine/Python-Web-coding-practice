@@ -11,6 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel = "stylesheet" href = "css/styles.css" type = "text/css"/>
+    <link rel = "icon" type = "image/png" href = "images/favicon.png">
 </head>
 <body onload = "retrieveTableDataFromJson();">
     <div id = "top-menu">
@@ -32,6 +33,14 @@
             <li><a href  = "#" >View</a></li>
             <li><a href  = "#" >Help</a></li>
         </ul>
+    </div>
+    <div id = "page-header">
+        <img src = "images/favicon.png" alt = "logo">
+        <div id = "quick-search" >
+            <label for = "file-quick-search">Search:</label>
+            <input type = "text" name = "search-index" id = "search-index">
+            <input type = "text" name = "select-files" id = "select-files">
+        </div>
     </div>
     <div class="container"> 
         <h1>Contact Information</h1>    
