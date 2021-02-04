@@ -271,3 +271,14 @@ tr:hover { background: rgb(255, 252, 209) }
     color: #FFF;
     text-decoration: none;
 }
+
+#add-new-row-in-table {
+    color: rgb(51, 122, 183);
+    text-decoration: none;
+}
+
+#add-new-row-in-table:hover {
+    color:rgb(0, 136, 255);
+    text-decoration: none;
+}
+
