@@ -326,3 +326,18 @@ tr:hover { background: rgb(255, 252, 209) }
 #search-index {
     color: #000;
 }
+
+#select-files{
+    background-color: white;
+    color: #000;
+    padding: 4px;
+    padding-right: 10px;
+}
+
+#select-files img{
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    width: 15px;
+    margin-left: 50px;
+}
