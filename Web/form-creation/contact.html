@@ -11,7 +11,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel = "stylesheet" href = "css/styles.css" type = "text/css"/>
-    <link rel = "icon" type = "image/png" href = "images/favicon.png">
+    <link rel = "icon" type = "image/png" href = "images/favicon.ico">
 </head>
 <body onload = "retrieveTableDataFromJson();">
     <div id = "top-menu">
@@ -35,7 +35,7 @@
         </ul>
     </div>
     <div id = "page-header">
-        <img src = "images/favicon.png" alt = "logo">
+        <img src = "images/favicon.ico" alt = "logo">
         <div id = "breadcrumbs">
             <a href = "index.html" id = "register-general">General Registration</a>
             <p id = "link-splitter">>></p>
@@ -45,6 +45,35 @@
             <label for = "file-quick-search">Search:</label>
             <input type = "text" name = "search-index" id = "search-index">
             <scan id = "select-files">Jump to files...<img src = "images/chevron-down-arrow.svg" alt = "down array"> </scan>
+        </div>
+        <div id = "go-to-projects">
+            <div id = "search-projects">
+                <input type = "text" name = "seached-project" id = "searched-project">
+            </div>
+            <div id = "list-projects">
+                <ul>
+                    <Strong style = "color: #000F;" >Recent Project</Strong>
+                    <li><a href = "#">Project #1</a></li>
+                    <li><a href = "#">Project #2</a></li>
+                    <li><a href = "#">Project #3</a></li>
+                    <Strong style = "color: #000F;" >All Project</Strong>
+                    <li><a href = "#">Project #1</a></li>
+                    <li><a href = "#">Project #2</a></li>
+                    <li><a href = "#">Project #3</a></li>
+                    <li><a href = "#">Project #4</a></li>
+                    <li><a href = "#">Project #5</a></li>
+                    <li><a href = "#">Project #6</a></li>
+                    <li><a href = "#">Project #7</a></li>
+                    <li><a href = "#">Project #8</a></li>
+                    <li><a href = "#">Project #9</a></li>
+                    <li><a href = "#">Project #10</a></li>
+                    <li><a href = "#">Project #11</a></li>
+                    <li><a href = "#">Project #12</a></li>
+                </ul>
+            </div>
+            <div id = "all-projects">
+                <a href = "#">All Projects</a>
+            </div>
         </div>
     </div>
     <div class="container"> 
@@ -73,7 +102,6 @@
                         <option value = "Others">Others</option>
                     </select>
                 </td>
-
                 <td><input id = 'contact1' type = "text"></td>
                 <td><input id = 'mobile1' type = "number"></td>
                 <td><i class = "fa fa-trash" onclick="deleteCurrentRow(1);"></i></td>
