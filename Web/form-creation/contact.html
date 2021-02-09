@@ -11,9 +11,84 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel = "stylesheet" href = "css/styles.css" type = "text/css"/>
+    <link rel = "icon" type = "image/png" href = "images/favicon.png">
+    <script type = "text/javascript">
+        window.addEventListener('click', function(e){	
+            if (!(document.getElementById('select-files').contains(e.target))){
+                var dropBox = document.getElementById('go-to-projects');
+                var getDropBoxStyle = dropBox.style.display;
+                console.log(getDropBoxStyle);
+                if (getDropBoxStyle == "block"){
+                    dropBox.style.display = "none";
+                }
+            } 
+        })
+    </script>
 </head>
 <body onload = "retrieveTableDataFromJson();">
-    <div class="container">
+    <div id = "top-menu">
+        <div id = "account">
+            <ul>
+                <li><a href = "#">My Account</a></li>
+                <li><a href = "#">Log out</a></li>
+            </ul>
+        </div>
+        <div id = "logged-by">
+            <ul>
+                <li>Logged By: <a href = "#">deepak</a></li>
+            </ul>
+        </div>
+        <ul>
+            <li><a href  = "#" >Home</a></li>
+            <li><a href  = "#" >My Page</a></li>
+            <li><a href  = "#" >Projects</a></li>
+            <li><a href  = "#" >View</a></li>
+            <li><a href  = "#" >Help</a></li>
+        </ul>
+    </div>
+    <div id = "page-header">
+        <img src = "images/favicon.png" alt = "logo">
+        <div id = "breadcrumbs">
+            <a href = "index.html" id = "register-general">General Registration</a>
+            <p id = "link-splitter">>></p>
+            <p id = "register-contact">Contact Registration</p>
+        </div>
+        <div id = "quick-search" >
+            <label for = "file-quick-search">Search:</label>
+            <input type = "text" name = "search-index" id = "search-index">
+            <scan id = "select-files" onclick="toggleDropbox();">Jump to files...<img src = "images/chevron-down-arrow.svg" alt = "down array"> </scan>
+        </div>
+        <div id = "go-to-projects">
+            <div id = "search-projects">
+                <input type = "text" name = "seached-project" id = "searched-project">
+            </div>
+            <div id = "list-projects">
+                <ul>
+                    <Strong style = "color: #000F;" >Recent Project</Strong>
+                    <li><a href = "#">Project #1 This is a lonth project name than the div element</a></li>
+                    <li><a href = "#">Project #2</a></li>
+                    <li><a href = "#">Project #3</a></li>
+                    <Strong style = "color: #000F;" >All Project</Strong>
+                    <li><a href = "#">Project #1</a></li>
+                    <li><a href = "#">Project #2</a></li>
+                    <li><a href = "#">Project #3</a></li>
+                    <li><a href = "#">Project #4</a></li>
+                    <li><a href = "#">Project #5</a></li>
+                    <li><a href = "#">Project #6</a></li>
+                    <li><a href = "#">Project #7</a></li>
+                    <li><a href = "#">Project #8</a></li>
+                    <li><a href = "#">Project #9</a></li>
+                    <li><a href = "#">Project #10</a></li>
+                    <li><a href = "#">Project #11</a></li>
+                    <li><a href = "#">Project #12</a></li>
+                </ul>
+            </div>
+            <div id = "all-projects">
+                <a href = "#">All Projects</a>
+            </div>
+        </div>
+    </div>
+    <div class="container"> 
         <h1>Contact Information</h1>    
         <span style = "display: flex;">
             <p class = "col-lg-11">Please enter your contact information</p>
@@ -39,7 +114,6 @@
                         <option value = "Others">Others</option>
                     </select>
                 </td>
-
                 <td><input id = 'contact1' type = "text"></td>
                 <td><input id = 'mobile1' type = "number"></td>
                 <td><i class = "fa fa-trash" onclick="deleteCurrentRow(1);"></i></td>

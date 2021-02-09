@@ -200,7 +200,6 @@ th {
     background-color: rgb(225, 225, 225);
     color:  rgb(41, 150, 204);
     font-family: Arial, Helvetica, sans-serif;
-    /* border: rgb(197, 42, 42) solid 2px; */
     font-size: 14px;
     font-weight: 700;
     text-align: center;
@@ -236,4 +235,178 @@ tr:hover { background: rgb(255, 252, 209) }
 .btn:hover {
     color:rgb(255, 255, 255);
     opacity: 0.8;
+}
+/*############## Top-Menu ############# */
+#top-menu {
+    background: #000;
+    padding: 5px 25px 2px 25px;
+    font-size: 0.9em;
+}
+
+#top-menu a{
+    color: #9da2a6;
+}
+
+#table-menu ol, ul {
+    margin-bottom: 3px;
+}
+
+#top-menu li {
+    padding-top: 7px;
+    display: inline;    
+    margin-right: 15px;
+}
+
+#account {
+    float: right; /* Position: absolute ignores the float property*/   
+}
+
+#logged-by {
+    float: right;
+    color: #FFF;
+}
+
+#logged-by a{
+    margin-left: 8px;
+}
+
+#top-menu a:hover, a:visited, a:active, a:focus {
+    color: #FFF;
+    text-decoration: none;
+}
+/*############## Top-Menu ############# */
+
+/*############## Sub-Menu ############# */
+
+#add-new-row-in-table {
+    color: rgb(51, 122, 183);
+    text-decoration: none;
+}
+
+#add-new-row-in-table:hover {
+    color:rgb(0, 136, 255);
+    text-decoration: none;
+}
+
+#page-header img {
+    margin-left: 10px;
+    margin-right: 15px;
+    padding-bottom: 30px;
+    width: 50px;
+}
+
+#page-header {
+    background-color:rgb(41,51,58);
+    color:white;
+    padding: 20px;
+    padding-bottom: 0px;
+}
+
+#quick-search {
+    user-select: none;
+    float: right; 
+}
+
+#breadcrumbs{
+    display: inline-block; 
+}
+
+#breadcrumbs a{
+    display: block;
+    font-size: 25px;
+}
+
+#breadcrumbs p{
+    display: inline-block;
+}
+
+#link-splitter {
+    padding-left: 10px;
+}
+
+#search-index {
+    color: #000;
+}
+
+#select-files{
+    background-color: white;
+    color: #000;
+    padding: 4px;
+    padding-right: 10px;
+}
+
+#select-files img{
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+    width: 15px;
+    margin-left: 50px;
+}
+
+/* ################## Search Filer ###############*/
+#go-to-projects {
+    user-select: none;
+    display: none;
+    position: fixed;
+    left: 80%;
+    top:75px;
+    background-color: #FFF;
+    padding-top: 7px;
+    z-index: 1;
+    width: 270px;
+    text-align: center;
+    border: 2px solid #c9c7c7;
+}
+
+#go-to-projects a { 
+    color: rgb(19, 18, 18);
+}
+
+#go-to-projects input {
+    width: 256px;
+    border: 2px solid rgb(92, 220, 252);
+    border-radius: 5px;
+    color: #000;
+    outline-color: rgb(92, 220, 252);
+}
+#list-projects {
+    max-height: 300px;
+    overflow: auto;
+}
+#list-projects a {
+    text-decoration: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+#list-projects ul {
+    padding-left: 0px;
+}
+
+#list-projects li:hover{
+    background: #759FCF;
+}
+
+#list-projects li.strong:hover {
+    background: #e67b18;
+}
+
+#list-projects li a { 
+    margin: 0px; 
+    display: block; 
+    width: 100%; 
+    height: 100%;
+}
+
+#all-projects{
+    border-top: 1px solid #c9c7c7;
+    padding-top: 5px;
+    padding-bottom: 7px;
+}
+
+#all-projects:hover {
+    background: #759FCF;
+}
+
+#all-projects a{
+    text-decoration: none;
 }
