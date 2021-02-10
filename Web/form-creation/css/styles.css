@@ -416,3 +416,17 @@ tr:hover {
 #all-projects a{
     text-decoration: none;
 }
+
+nav select {
+    display: none;
+}
+
+@media (max-width: 750px) {
+    nav ul {
+        display: none;
+    }
+
+    nav select {
+        display: inline-block;
+    }
+}
