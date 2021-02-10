@@ -9,16 +9,19 @@
  #patient-age-year {
     width: 40px;
  }
+
  #patient-age-month, #patient-age-date {
      width: 30px;
      border:none;
  }
+
 body {
     background-image: url("../images/form-background.jpg");
     background-repeat: no-repeat;
     background-position: fixed;
     background-attachment: fixed;
 }
+
  .form-container {
     --form-theme-color: #00bcd4;
     --form-bg-color: white;
@@ -154,7 +157,6 @@ body {
 
 #invalid-date {
     position: relative;
-    /* display: inline; */
     bottom: 80px;
     left: 100px;
     color:red;
@@ -179,6 +181,7 @@ body {
 .namefield, .surnamefield {
     display: flex;
 }
+
 .remainging-character-count {
     position: relative;
     top:12px;
@@ -225,7 +228,9 @@ th td{
     border: rgb(201, 199, 199) solid 1px;
 } 
 
-tr:hover { background: rgb(255, 252, 209) }
+tr:hover { 
+    background: rgb(255, 252, 209) 
+}
 
 .btn{
     background-color: rgb(41, 150, 204);
@@ -345,17 +350,18 @@ tr:hover { background: rgb(255, 252, 209) }
 
 /* ################## Search Filer ###############*/
 #go-to-projects {
-    user-select: none;
-    display: none;
-    position: fixed;
-    left: 80%;
-    top:75px;
     background-color: #FFF;
-    padding-top: 7px;
-    z-index: 1;
-    width: 270px;
-    text-align: center;
     border: 2px solid #c9c7c7;
+    display: none;
+    right: 10px;
+    padding-top: 7px;
+    position: absolute;
+    text-align: center;
+    top:75px;
+    user-select: none;
+    width: 270px;
+    z-index: 1;
+    float: right;
 }
 
 #go-to-projects a { 
