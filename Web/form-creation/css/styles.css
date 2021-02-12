@@ -1,7 +1,7 @@
 @charset "UTF-8";
 @import url("https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css");
 
-.patient-name::before, .patient-surname::before,.patient-dob::before, .patient-gender::before{
+.patient-name::before, .patient-surname::before, .patient-dob::before, .patient-gender::before{
     content: " *";
     color: red;
  }
@@ -250,6 +250,9 @@ tr:hover {
 
 #top-menu a{
     color: #9da2a6;
+    padding: 0px;
+    height: 30px;
+    max-height: 70px;
 }
 
 #table-menu ol, ul {
@@ -417,16 +420,8 @@ tr:hover {
     text-decoration: none;
 }
 
-nav select {
-    display: none;
-}
-
-@media (max-width: 750px) {
-    nav ul {
+@media (min-width: 780px){
+    .navbar-toggler-icon {
         display: none;
-    }
-
-    nav select {
-        display: inline-block;
     }
 }

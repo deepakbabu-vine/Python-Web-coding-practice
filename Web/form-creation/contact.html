@@ -6,12 +6,13 @@
     </title>
     <!-- <link rel = "stylesheet" href="bootstrap/css/bootstrap.min.css";>
     <script type = "text/javascript" src = "bootstrap/js/bootstrap.min.js"></script> -->
+    <meta name = "viewport" content = "width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel = "stylesheet" href = "css/styles.css" type = "text/css"/>
-    <link rel = "icon" type = "image/png" href = "images/favicon.png">
+    <link rel = "icon" type = "image/png" href = "images/form-background.jpg">
     <script type = "text/javascript">
         window.addEventListener('click', function(e){	
             if (!(document.getElementById('select-files').contains(e.target))){
@@ -38,26 +39,23 @@
                 <li>Logged By: <a href = "#">deepak</a></li>
             </ul>
         </div>
-        <nav>
-            <ul>
-                <li><a href  = "#" >Home</a></li>
-                <li><a href  = "#" >My Page</a></li>
-                <li><a href  = "#" >Projects</a></li>
-                <li><a href  = "#" >View</a></li>
-                <li><a href  = "#" >Help</a></li>
-            </ul>
-            <select> 
-                <option value = "" selected = 'selected'>Select</option>
-                <option value = "#" >Home</option>
-                <option value = "#" >My Page</option>
-                <option value = "#" >Projects</option>
-                <option value = "#" >View</option>
-                <option value = "#" >Help</option>
-            </select>
+        <nav class = "navbar navbar-expand-lg">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon">collapse</span>
+              </button>
+            <div id = "navbarSupportedContent">
+                <ul class = "nav">
+                    <li><a href  = "#" >Home</a></li>
+                    <li><a href  = "#" >My Page</a></li>
+                    <li><a href  = "#" >Projects</a></li>
+                    <li><a href  = "#" >View</a></li>
+                    <li><a href  = "#" >Help</a></li>
+                </ul>
+            </div> 
         </nav>    
     </div>
     <div id = "page-header">
-        <img src = "images/favicon.png" alt = "logo">
+        <img src = "images/form-background.jpg" alt = "logo">
         <div id = "breadcrumbs">
             <a href = "index.html" id = "register-general">General Registration</a>
             <p id = "link-splitter">>></p>
@@ -75,7 +73,7 @@
             <div id = "list-projects">
                 <ul>
                     <Strong style = "color: #000F;" >Recent Project</Strong>
-                    <li><a href = "#">Project #1 This is a lonth project name than the div element</a></li>
+                    <li><a href = "#">Project #1 This is a longer project name than the div element</a></li>
                     <li><a href = "#">Project #2</a></li>
                     <li><a href = "#">Project #3</a></li>
                     <Strong style = "color: #000F;" >All Project</Strong>
