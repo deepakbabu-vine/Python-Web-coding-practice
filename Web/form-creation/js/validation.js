@@ -300,3 +300,14 @@ function retrieveTableDataFromJson() {
         selectTableCell.value = tableDataInArray[arrayIndex].Mobile;
     }
 }
+
+function toggleDropbox() {
+    var dropbox = document.getElementById('go-to-projects');
+    var getStyle = dropbox.style.display;
+    if(getStyle !== "" && getStyle !== "none"){
+        dropbox.style.display = "none";
+    }
+    else{
+        dropbox.style.display = "block";
+    }
+}
